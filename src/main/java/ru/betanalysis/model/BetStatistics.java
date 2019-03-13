@@ -1,5 +1,9 @@
 package ru.betanalysis.model;
 
+
+/**
+ * Статистика по ставкам
+ */
 public class BetStatistics {
 
     /**
