@@ -34,4 +34,14 @@ public class SportEvent {
         this.tournament = tournament;
         this.dateTime = dateTime;
     }
+
+    @Override
+    public String toString() {
+        return "SportEvent{" +
+                "teamSet=" + teamSet +
+                ", sportType=" + sportType +
+                ", tournament=" + tournament +
+                ", dateTime=" + dateTime +
+                '}';
+    }
 }

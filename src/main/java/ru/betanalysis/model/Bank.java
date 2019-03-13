@@ -42,4 +42,15 @@ public class Bank {
         this.dateTime = dateTime;
         this.percentable = percentable;
     }
+
+    @Override
+    public String toString() {
+        return "Bank{" +
+                "users=" + users +
+                ", amount=" + amount +
+                ", currency=" + currency +
+                ", dateTime=" + dateTime +
+                ", percentable=" + percentable +
+                '}';
+    }
 }

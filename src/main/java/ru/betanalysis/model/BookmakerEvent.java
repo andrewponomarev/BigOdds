@@ -58,4 +58,15 @@ public class BookmakerEvent {
     public Bookmaker getBookmaker() {
         return bookmaker;
     }
+
+    @Override
+    public String toString() {
+        return "BookmakerEvent{" +
+                "sportEvent=" + sportEvent +
+                ", betType=" + betType +
+                ", result=" + result +
+                ", coefficient=" + coefficient +
+                ", bookmaker=" + bookmaker +
+                '}';
+    }
 }

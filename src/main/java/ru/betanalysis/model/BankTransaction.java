@@ -18,4 +18,13 @@ public class BankTransaction {
         this.value = value;
         this.dateTime = dateTime;
     }
+
+    @Override
+    public String toString() {
+        return "BankTransaction{" +
+                "bank=" + bank +
+                ", value=" + value +
+                ", dateTime=" + dateTime +
+                '}';
+    }
 }

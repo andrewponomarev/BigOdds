@@ -86,4 +86,18 @@ public class BetStatistics {
     public double getTurnoverValue() {
         return turnoverValue;
     }
+
+    @Override
+    public String toString() {
+        return "BetStatistics{" +
+                "netProfit=" + netProfit +
+                ", roi=" + roi +
+                ", averageBetValue=" + averageBetValue +
+                ", maxBetValue=" + maxBetValue +
+                ", minBetValue=" + minBetValue +
+                ", averageBetCoefficient=" + averageBetCoefficient +
+                ", turnoverPercent=" + turnoverPercent +
+                ", turnoverValue=" + turnoverValue +
+                '}';
+    }
 }

@@ -95,4 +95,18 @@ public class Bet {
     public boolean isExpress() {
         return isExpress;
     }
+
+    @Override
+    public String toString() {
+        return "Bet{" +
+                "event=" + event +
+                ", value='" + value + '\'' +
+                ", currency=" + currency +
+                ", returnSum=" + returnSum +
+                ", netProfit=" + netProfit +
+                ", coefficient=" + coefficient +
+                ", dateTime=" + dateTime +
+                ", isExpress=" + isExpress +
+                '}';
+    }
 }
