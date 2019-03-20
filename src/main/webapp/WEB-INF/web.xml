@@ -16,4 +16,14 @@
         <url-pattern>/users</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>betServlet</servlet-name>
+        <servlet-class>ru.betanalysis.web.BetServlet</servlet-class>
+        <load-on-startup>0</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>betServlet</servlet-name>
+        <url-pattern>/bets</url-pattern>
+    </servlet-mapping>
+
 </web-app>

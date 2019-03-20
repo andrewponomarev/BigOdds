@@ -11,10 +11,17 @@ import java.util.Set;
  */
 public class Bet {
 
+    private Integer id;
+
+//    /**
+//     * Cписок событий
+//     */
+//    private final Set<BookmakerEvent> events;
+
     /**
-     * Cписок событий
+     * Событие
      */
-    private final Set<BookmakerEvent> event;
+    private final String event;
 
     /**
      * Размер ставки
@@ -25,7 +32,7 @@ public class Bet {
     /**
      * Валюта, в которой сделана ставка
      */
-    private final Currency currency;
+    private final String currency;
 
     /**
      * Сумма выигрыша/проигрыша
@@ -53,7 +60,14 @@ public class Bet {
     private final boolean isExpress;
 
 
-    public Bet(Set<BookmakerEvent> event, double value, Currency currency, double returnSum, double netProfit, double coefficient, LocalDateTime dateTime, boolean isExpress) {
+    public Bet(String event, double value, String currency, double returnSum, double netProfit,
+               double coefficient, LocalDateTime dateTime, boolean isExpress) {
+        this(null, event, value, currency, returnSum, netProfit, coefficient, dateTime, isExpress);
+    }
+
+    public Bet(Integer id, String event, double value, String currency, double returnSum, double netProfit,
+               double coefficient, LocalDateTime dateTime, boolean isExpress) {
+        this.id = id;
         this.event = event;
         this.value = value;
         this.currency = currency;
@@ -64,7 +78,15 @@ public class Bet {
         this.isExpress = isExpress;
     }
 
-    public Set<BookmakerEvent> getEvent() {
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getEvent() {
         return event;
     }
 
@@ -72,7 +94,7 @@ public class Bet {
         return value;
     }
 
-    public Currency getCurrency() {
+    public String getCurrency() {
         return currency;
     }
 
@@ -96,11 +118,16 @@ public class Bet {
         return isExpress;
     }
 
+    public boolean isNew() {
+        return id == null;
+    }
+
     @Override
     public String toString() {
         return "Bet{" +
-                "event=" + event +
-                ", value='" + value + '\'' +
+                "id=" + id +
+                ", event=" + event +
+                ", value=" + value +
                 ", currency=" + currency +
                 ", returnSum=" + returnSum +
                 ", netProfit=" + netProfit +
