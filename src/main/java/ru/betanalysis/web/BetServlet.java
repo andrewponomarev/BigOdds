@@ -4,8 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.betanalysis.model.Bet;
 import ru.betanalysis.repository.BetRepository;
-import ru.betanalysis.repository.InMemoryBetRepository;
-import ru.betanalysis.util.BetUtil;
+import ru.betanalysis.repository.InMemoryBetRepositoryImpl;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -15,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Currency;
 import java.util.Objects;
 
 public class BetServlet extends HttpServlet {
@@ -27,7 +25,7 @@ public class BetServlet extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        repository = new InMemoryBetRepository();
+        repository = new InMemoryBetRepositoryImpl();
     }
 
     @Override

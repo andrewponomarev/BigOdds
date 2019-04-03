@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class InMemoryBetRepository implements BetRepository {
+public class InMemoryBetRepositoryImpl implements BetRepository {
 
     private Map<Integer, Bet> repository = new ConcurrentHashMap<>();
 

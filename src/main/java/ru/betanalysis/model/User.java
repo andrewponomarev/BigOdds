@@ -2,17 +2,14 @@ package ru.betanalysis.model;
 
 
 import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.EnumSet;
 import java.util.Set;
 
 /**
  * Пользователь
  */
-public class User {
-
-    /**
-     * Спиоск банков пользователя
-     */
-    private final Set<Bank> banks;
+public class User extends AbstractNamedEntity  {
 
     /**
      * email;
@@ -44,20 +41,39 @@ public class User {
      */
     private final LocalDateTime dateTime;
 
+    /**
+     * Активен ли пользователь
+     */
+    private boolean enabled = true;
 
-    public User(Set<Bank> banks, String email, String password,
-                String secondName, String firstName, String phoneNumber, LocalDateTime dateTime) {
-        this.banks = banks;
+    /**
+     * Дата регистрации
+     */
+    private final Date registered = new Date();
+
+    /**
+     * Роли
+     */
+    private Set<Role> roles;
+
+    public User(Integer id, String name, String email, String password, String secondName,
+                String firstName, String phoneNumber, LocalDateTime dateTime, Role role, Role... roles) {
+        this(id, name, email, password, secondName, firstName, phoneNumber, dateTime,
+                true, EnumSet.of(role, roles));
+    }
+
+    public User(Integer id, String name, String email, String password, String secondName,
+                String firstName, String phoneNumber, LocalDateTime dateTime,
+                boolean enabled, Set<Role> roles) {
+        super(id, name);
         this.email = email;
         this.password = password;
         this.secondName = secondName;
         this.firstName = firstName;
         this.phoneNumber = phoneNumber;
         this.dateTime = dateTime;
-    }
-
-    public Set<Bank> getBanks() {
-        return banks;
+        this.enabled = enabled;
+        this.roles = roles;
     }
 
     public String getEmail() {
@@ -87,13 +103,17 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "banks=" + banks +
-                ", email='" + email + '\'' +
+                "email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", secondName='" + secondName + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", dateTime=" + dateTime +
+                ", enabled=" + enabled +
+                ", registered=" + registered +
+                ", roles=" + roles +
+                ", name='" + name + '\'' +
+                ", id=" + id +
                 '}';
     }
 }
