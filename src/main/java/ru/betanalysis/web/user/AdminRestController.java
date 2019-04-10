@@ -1,9 +1,12 @@
 package ru.betanalysis.web.user;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import ru.betanalysis.model.User;
 
 import java.util.List;
 
+@Controller
 public class AdminRestController extends AbstractUserController {
 
     @Override

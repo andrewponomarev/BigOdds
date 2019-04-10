@@ -1,5 +1,7 @@
 package ru.betanalysis.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import ru.betanalysis.model.User;
 import ru.betanalysis.repository.UserRepository;
 import ru.betanalysis.util.exception.NotFoundException;
@@ -9,9 +11,15 @@ import java.util.List;
 import static ru.betanalysis.util.ValidationUtil.checkNotFound;
 import static ru.betanalysis.util.ValidationUtil.checkNotFoundWithId;
 
+@Service
 public class UserServiceImpl implements UserService {
 
-    private UserRepository repository;
+    private final UserRepository repository;
+
+    @Autowired
+    public UserServiceImpl(UserRepository repository) {
+        this.repository = repository;
+    }
 
     @Override
     public User create(User user) {

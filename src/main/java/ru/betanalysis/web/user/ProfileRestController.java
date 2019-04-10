@@ -1,9 +1,11 @@
 package ru.betanalysis.web.user;
 
+import org.springframework.stereotype.Controller;
 import ru.betanalysis.model.User;
 
 import static ru.betanalysis.web.SecurityUtil.authUserId;
 
+@Controller
 public class ProfileRestController extends AbstractUserController {
 
     public User get() {
