@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.betanalysis.model.Bet;
 import ru.betanalysis.repository.BetRepository;
-import ru.betanalysis.repository.InMemoryBetRepositoryImpl;
+import ru.betanalysis.repository.mock.InMemoryBetRepositoryImpl;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -45,7 +45,7 @@ public class BetServlet extends HttpServlet {
                 );
 
         log.info(bet.isNew() ? "Create {}" : "Update {}", bet);
-        repository.save(bet);
+        repository.save(bet, SecurityUtil.authUserId());
         response.sendRedirect("bets");
     }
 
@@ -57,7 +57,7 @@ public class BetServlet extends HttpServlet {
             case "delete":
                 int id = getId(request);
                 log.info("Delete {}", id);
-                repository.delete(id);
+                repository.delete(id, SecurityUtil.authUserId());
                 response.sendRedirect("bets");
                 break;
             case "create":
@@ -66,14 +66,14 @@ public class BetServlet extends HttpServlet {
                         new Bet("", 0.0, "123", 0.0,
                                 0.0, 0.0,
                                 LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), true) :
-                        repository.get(getId(request));
+                        repository.get(getId(request), SecurityUtil.authUserId());
                 request.setAttribute("bet", bet);
                 request.getRequestDispatcher("/betForm.jsp").forward(request, response);
                 break;
             case "all":
             default:
                 log.info("getAll");
-                request.setAttribute("bets", repository.getAll());
+                request.setAttribute("bets", repository.getAll(SecurityUtil.authUserId()));
                 request.getRequestDispatcher("/bets.jsp").forward(request, response);
                 break;
         }

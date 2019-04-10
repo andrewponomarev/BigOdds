@@ -2,13 +2,18 @@ package ru.betanalysis;
 
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import ru.betanalysis.model.Bet;
 import ru.betanalysis.model.Role;
 import ru.betanalysis.model.User;
-import ru.betanalysis.repository.UserRepository;
 import ru.betanalysis.web.user.AdminRestController;
+import ru.betanalysis.web.Bet.BetRestController;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.Month;
 import java.util.Arrays;
+import java.util.List;
 
 public class SpringMain {
     public static void main(String[] args) {
@@ -19,6 +24,14 @@ public class SpringMain {
             adminUserController.create(new User(null, "userName", "email@mail.ru", "password",
                     "secondName", "firstName", "phoneNumber",
                     LocalDateTime.now(), Role.ROLE_ADMIN));
+            System.out.println();
+
+            BetRestController mealController = appCtx.getBean(BetRestController.class);
+            List<Bet> filteredMealsWithExcess =
+                    mealController.getBetween(
+                            LocalDate.of(2015, Month.MAY, 30), LocalTime.of(7, 0),
+                            LocalDate.of(2015, Month.MAY, 31), LocalTime.of(11, 0));
+            filteredMealsWithExcess.forEach(System.out::println);
         }
     }
 }

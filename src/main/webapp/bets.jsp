@@ -27,9 +27,9 @@
             <jsp:useBean id="bet" scope="page" type="ru.betanalysis.model.Bet"/>
             <tr>
                 <td>
-                        <%--${meal.dateTime.toLocalDate()} ${meal.dateTime.toLocalTime()}--%>
-                        <%--<%=TimeUtil.toString(meal.getDateTime())%>--%>
-                        <%--${fn:replace(meal.dateTime, 'T', ' ')}--%>
+                        <%--${bet.dateTime.toLocalDate()} ${bet.dateTime.toLocalTime()}--%>
+                        <%--<%=TimeUtil.toString(bet.getDateTime())%>--%>
+                        <%--${fn:replace(bet.dateTime, 'T', ' ')}--%>
                         ${fn:formatDateTime(bet.dateTime)}
                 </td>
                 <td>${bet.event}</td>

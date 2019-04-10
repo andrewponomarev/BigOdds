@@ -9,9 +9,7 @@ import java.util.Set;
  * Ставка
  *
  */
-public class Bet {
-
-    private Integer id;
+public class Bet extends AbstractBaseEntity {
 
 //    /**
 //     * Cписок событий
@@ -67,7 +65,7 @@ public class Bet {
 
     public Bet(Integer id, String event, double value, String currency, double returnSum, double netProfit,
                double coefficient, LocalDateTime dateTime, boolean isExpress) {
-        this.id = id;
+        super(id);
         this.event = event;
         this.value = value;
         this.currency = currency;
@@ -76,14 +74,6 @@ public class Bet {
         this.coefficient = coefficient;
         this.dateTime = dateTime;
         this.isExpress = isExpress;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String getEvent() {
@@ -116,10 +106,6 @@ public class Bet {
 
     public boolean isExpress() {
         return isExpress;
-    }
-
-    public boolean isNew() {
-        return id == null;
     }
 
     @Override
