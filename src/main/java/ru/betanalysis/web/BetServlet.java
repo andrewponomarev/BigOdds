@@ -1,10 +1,9 @@
 package ru.betanalysis.web;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.betanalysis.model.Bet;
-import ru.betanalysis.repository.BetRepository;
-import ru.betanalysis.repository.mock.InMemoryBetRepositoryImpl;
+import ru.betanalysis.web.bet.BetRestController;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -17,23 +16,28 @@ import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
 public class BetServlet extends HttpServlet {
-    
-    private static final Logger log = LoggerFactory.getLogger(BetServlet.class);
 
-    private BetRepository repository;
+    private ConfigurableApplicationContext springContext;
+    private BetRestController betController;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        repository = new InMemoryBetRepositoryImpl();
+        springContext = new ClassPathXmlApplicationContext("spring/spring-app.xml");
+        betController = springContext.getBean(BetRestController.class);
+    }
+
+    @Override
+    public void destroy() {
+        springContext.close();
+        super.destroy();
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
-        String id = request.getParameter("id");
 
-        Bet bet = new Bet(id.isEmpty() ? null : Integer.valueOf(id),
+        Bet bet = new Bet(
                 request.getParameter("event"),
                 0.0,
                "123",
@@ -44,8 +48,12 @@ public class BetServlet extends HttpServlet {
                 false
                 );
 
-        log.info(bet.isNew() ? "Create {}" : "Update {}", bet);
-        repository.save(bet, SecurityUtil.authUserId());
+        if (request.getParameter("id").isEmpty()) {
+            betController.create(bet);
+        } else {
+            betController.update(bet, getId(request));
+        }
+
         response.sendRedirect("bets");
     }
 
@@ -56,8 +64,7 @@ public class BetServlet extends HttpServlet {
         switch (action == null ? "all" : action) {
             case "delete":
                 int id = getId(request);
-                log.info("Delete {}", id);
-                repository.delete(id, SecurityUtil.authUserId());
+                betController.delete(id);
                 response.sendRedirect("bets");
                 break;
             case "create":
@@ -66,14 +73,13 @@ public class BetServlet extends HttpServlet {
                         new Bet("", 0.0, "123", 0.0,
                                 0.0, 0.0,
                                 LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), true) :
-                        repository.get(getId(request), SecurityUtil.authUserId());
+                        betController.get(getId(request));
                 request.setAttribute("bet", bet);
                 request.getRequestDispatcher("/betForm.jsp").forward(request, response);
                 break;
             case "all":
             default:
-                log.info("getAll");
-                request.setAttribute("bets", repository.getAll(SecurityUtil.authUserId()));
+                request.setAttribute("bets", betController.getAll());
                 request.getRequestDispatcher("/bets.jsp").forward(request, response);
                 break;
         }

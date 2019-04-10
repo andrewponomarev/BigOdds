@@ -1,4 +1,4 @@
-package ru.betanalysis.web.Bet;
+package ru.betanalysis.web.bet;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

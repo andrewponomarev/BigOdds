@@ -6,7 +6,7 @@ import ru.betanalysis.model.Bet;
 import ru.betanalysis.model.Role;
 import ru.betanalysis.model.User;
 import ru.betanalysis.web.user.AdminRestController;
-import ru.betanalysis.web.Bet.BetRestController;
+import ru.betanalysis.web.bet.BetRestController;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
