@@ -11,9 +11,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
+
+import static ru.betanalysis.util.DateTimeUtil.parseLocalDate;
+import static ru.betanalysis.util.DateTimeUtil.parseLocalTime;
 
 public class BetServlet extends HttpServlet {
 
@@ -37,24 +42,35 @@ public class BetServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
 
-        Bet bet = new Bet(
-                request.getParameter("event"),
-                0.0,
-               "123",
-                0.0,
-                0.0,
-                Double.valueOf(request.getParameter("coefficient")),
-                LocalDateTime.parse(request.getParameter("dateTime")),
-                false
-                );
+        String action = request.getParameter("action");
+        if (action == null) {
+            Bet bet = new Bet(
+                    request.getParameter("event"),
+                    0.0,
+                    "123",
+                    0.0,
+                    0.0,
+                    Double.valueOf(request.getParameter("coefficient")),
+                    LocalDateTime.parse(request.getParameter("dateTime")),
+                    false
+            );
 
-        if (request.getParameter("id").isEmpty()) {
-            betController.create(bet);
-        } else {
-            betController.update(bet, getId(request));
+            if (request.getParameter("id").isEmpty()) {
+                betController.create(bet);
+            } else {
+                betController.update(bet, getId(request));
+            }
+            response.sendRedirect("bets");
+
+        } else if ("filter".equals(action)) {
+            LocalDate startDate = parseLocalDate(request.getParameter("startDate"));
+            LocalDate endDate = parseLocalDate(request.getParameter("endDate"));
+            LocalTime startTime = parseLocalTime(request.getParameter("startTime"));
+            LocalTime endTime = parseLocalTime(request.getParameter("endTime"));
+            request.setAttribute("bets", betController.getBetween(startDate, startTime, endDate, endTime));
+            request.getRequestDispatcher("/bets.jsp").forward(request, response);
         }
 
-        response.sendRedirect("bets");
     }
 
     @Override

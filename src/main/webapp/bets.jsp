@@ -6,11 +6,32 @@
 <html>
 <head>
     <title>Bet list</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 <section>
     <h3><a href="index.html">Home</a></h3>
-    <h2>Bet</h2>
+    <h2>Bets</h2>
+    <form method="post" action="bets?action=filter">
+        <dl>
+            <dt>From Date:</dt>
+            <dd><input type="date" name="startDate" value="${param.startDate}"></dd>
+        </dl>
+        <dl>
+            <dt>To Date:</dt>
+            <dd><input type="date" name="endDate" value="${param.endDate}"></dd>
+        </dl>
+        <dl>
+            <dt>From Time:</dt>
+            <dd><input type="time" name="startTime" value="${param.startTime}"></dd>
+        </dl>
+        <dl>
+            <dt>To Time:</dt>
+            <dd><input type="time" name="endTime" value="${param.endTime}"></dd>
+        </dl>
+        <button type="submit">Filter</button>
+    </form>
+    <hr/>
     <a href="bets?action=create">Add bet</a>
     <hr/>
     <table border="1" cellpadding="8" cellspacing="0">
