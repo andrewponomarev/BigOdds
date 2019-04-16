@@ -1,5 +1,7 @@
 package ru.betanalysis.repository.mock;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
 import ru.betanalysis.model.Bet;
@@ -7,6 +9,8 @@ import ru.betanalysis.repository.BetRepository;
 import ru.betanalysis.util.BetUtil;
 import ru.betanalysis.util.Util;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -20,6 +24,8 @@ import static ru.betanalysis.repository.mock.InMemoryUserRepositoryImpl.USER_ID;
 
 @Repository
 public class InMemoryBetRepositoryImpl implements BetRepository {
+
+    private static final Logger log = LoggerFactory.getLogger(InMemoryBetRepositoryImpl.class);
 
     // Map  userId -> (betId-> bet)
     private Map<Integer, Map<Integer, Bet>> repository = new ConcurrentHashMap<>();
@@ -37,6 +43,15 @@ public class InMemoryBetRepositoryImpl implements BetRepository {
                 LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), true), ADMIN_ID);
     }
 
+    @PostConstruct
+    public void postConstruct() {
+        log.info("+++ PostConstruct");
+    }
+
+    @PreDestroy
+    public void preDestroy() {
+        log.info("+++ PreDestroy");
+    }
 
     @Override
     public Bet save(Bet bet, int userId) {

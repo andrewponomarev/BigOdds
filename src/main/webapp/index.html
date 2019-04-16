@@ -6,9 +6,13 @@
 <body>
 <h3>Сервис для анализа ваших ставок</h3>
 <hr>
-<ul>
-    <li><a href="users">Users</a></li>
-    <li><a href="bets">Bets</a></li>
-</ul>
+<form method="post" action="users">
+    <b>Bets of&nbsp;</b>
+    <select name="userId">
+        <option value="1">User</option>
+        <option value="2">Admin</option>
+    </select>
+    <button type="submit">Select</button>
+</form>
 </body>
 </html>
