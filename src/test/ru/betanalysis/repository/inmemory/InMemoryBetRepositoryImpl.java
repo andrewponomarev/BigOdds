@@ -1,4 +1,4 @@
-package ru.betanalysis.repository.mock;
+package ru.betanalysis.repository.inmemory;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,8 +19,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static ru.betanalysis.repository.mock.InMemoryUserRepositoryImpl.ADMIN_ID;
-import static ru.betanalysis.repository.mock.InMemoryUserRepositoryImpl.USER_ID;
+import static ru.betanalysis.repository.inmemory.InMemoryUserRepositoryImpl.ADMIN_ID;
+import static ru.betanalysis.repository.inmemory.InMemoryUserRepositoryImpl.USER_ID;
 
 @Repository
 public class InMemoryBetRepositoryImpl implements BetRepository {
