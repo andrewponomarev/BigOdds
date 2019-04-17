@@ -26,12 +26,12 @@ public class SpringMain {
                     LocalDateTime.now(), Role.ROLE_ADMIN));
             System.out.println();
 
-            BetRestController mealController = appCtx.getBean(BetRestController.class);
-            List<Bet> filteredMealsWithExcess =
-                    mealController.getBetween(
+            BetRestController BetController = appCtx.getBean(BetRestController.class);
+            List<Bet> filteredBetsWithExcess =
+                    BetController.getBetween(
                             LocalDate.of(2015, Month.MAY, 30), LocalTime.of(7, 0),
                             LocalDate.of(2015, Month.MAY, 31), LocalTime.of(11, 0));
-            filteredMealsWithExcess.forEach(System.out::println);
+            filteredBetsWithExcess.forEach(System.out::println);
         }
     }
 }

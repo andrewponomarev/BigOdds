@@ -9,7 +9,7 @@ import java.util.List;
 public interface BetRepository {
 
     // null if updated bet do not belong to userId
-    Bet save(Bet meal, int userId);
+    Bet save(Bet Bet, int userId);
 
     // false if bet do not belong to userId
     boolean delete(int id, int userId);

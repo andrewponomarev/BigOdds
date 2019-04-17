@@ -14,32 +14,32 @@ public class User extends AbstractNamedEntity  {
     /**
      * email;
      */
-    private final String email;
+    private String email;
 
     /**
      * пароль
      */
-    private final String password;
+    private String password;
 
     /**
      * Фамилия
      */
-    private final String secondName;
+    private String secondName;
 
     /**
      * Имя
      */
-    private final String firstName;
+    private String firstName;
 
     /**
      * Номер телефона
      */
-    private final String phoneNumber;
+    private String phoneNumber;
 
     /**
      * Дата рождения
      */
-    private final LocalDateTime dateTime;
+    private LocalDateTime dateTime;
 
     /**
      * Активен ли пользователь
@@ -49,12 +49,26 @@ public class User extends AbstractNamedEntity  {
     /**
      * Дата регистрации
      */
-    private final Date registered = new Date();
+    private Date registered = new Date();
 
     /**
      * Роли
      */
     private Set<Role> roles;
+
+    public User() {
+    }
+
+    public User(User other) {
+        this.email = other.email;
+        this.password = other.password;
+        this.secondName = other.secondName;
+        this.firstName = other.firstName;
+        this.phoneNumber = other.phoneNumber;
+        this.dateTime = other.dateTime;
+        this.enabled = other.enabled;
+        this.roles = other.roles;
+    }
 
     public User(Integer id, String name, String email, String password, String secondName,
                 String firstName, String phoneNumber, LocalDateTime dateTime, Role role, Role... roles) {
