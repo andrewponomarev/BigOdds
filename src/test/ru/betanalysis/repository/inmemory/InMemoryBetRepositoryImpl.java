@@ -9,8 +9,6 @@ import ru.betanalysis.repository.BetRepository;
 import ru.betanalysis.util.BetUtil;
 import ru.betanalysis.util.Util;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -19,8 +17,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static ru.betanalysis.repository.inmemory.InMemoryUserRepositoryImpl.ADMIN_ID;
-import static ru.betanalysis.repository.inmemory.InMemoryUserRepositoryImpl.USER_ID;
+import static ru.betanalysis.web.user.UserTestData.ADMIN_ID;
+import static ru.betanalysis.web.user.UserTestData.USER_ID;
 
 @Repository
 public class InMemoryBetRepositoryImpl implements BetRepository {
@@ -41,16 +39,6 @@ public class InMemoryBetRepositoryImpl implements BetRepository {
         save(new Bet("Admin bet2", 0.0, "123", 0.0,
                 0.0, 0.0,
                 LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), true), ADMIN_ID);
-    }
-
-    @PostConstruct
-    public void postConstruct() {
-        log.info("+++ PostConstruct");
-    }
-
-    @PreDestroy
-    public void preDestroy() {
-        log.info("+++ PreDestroy");
     }
 
     @Override

@@ -15,8 +15,7 @@ CREATE TABLE users
   secondName       VARCHAR                         ,
   firstName        VARCHAR                         ,
   datetime         TIMESTAMP DEFAULT now()         ,
-  phoneNumber      VARCHAR                         ,
-
+  phoneNumber      VARCHAR
 );
 CREATE UNIQUE INDEX users_unique_email_idx ON users (email);
 
