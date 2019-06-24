@@ -26,3 +26,18 @@ CREATE TABLE user_roles
   CONSTRAINT user_roles_idx UNIQUE (user_id, role),
   FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
+
+CREATE TABLE bets (
+  id          INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
+  user_id     INTEGER   NOT NULL,
+  date_time   TIMESTAMP NOT NULL,
+  coefficient DOUBLE    NOT NULL,
+  currency    TEXT      NOT NULL,
+  event       TEXT              ,
+  net_profit  DOUBLE            ,
+  return_sum  DOUBLE            ,
+  is_express  BOOL DEFAUL FALSE ,
+  FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+);
+CREATE UNIQUE INDEX bets_unique_user_datetime_idx
+  ON bets (user_id, date_time);

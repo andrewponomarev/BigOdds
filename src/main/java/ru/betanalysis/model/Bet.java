@@ -19,43 +19,43 @@ public class Bet extends AbstractBaseEntity {
     /**
      * Событие
      */
-    private final String event;
+    private String event;
 
     /**
      * Размер ставки
      *
      */
-    private final double value;
+    private double value;
 
     /**
      * Валюта, в которой сделана ставка
      */
-    private final String currency;
+    private String currency;
 
     /**
      * Сумма выигрыша/проигрыша
      */
-    private final double returnSum;
+    private double returnSum;
 
     /**
      * Чистая прибыль
      */
-    private final double netProfit;
+    private double netProfit;
 
     /**
      * Коэффициент
      */
-    private final double coefficient;
+    private double coefficient;
 
     /**
      * Дата/время
      */
-    private final LocalDateTime dateTime;
+    private LocalDateTime dateTime;
 
     /**
      * Признак экспресса
      */
-    private final boolean isExpress;
+    private boolean isExpress;
 
 
     public Bet(String event, double value, String currency, double returnSum, double netProfit,
@@ -106,6 +106,38 @@ public class Bet extends AbstractBaseEntity {
 
     public boolean isExpress() {
         return isExpress;
+    }
+
+    public void setEvent(String event) {
+        this.event = event;
+    }
+
+    public void setValue(double value) {
+        this.value = value;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
+    public void setReturnSum(double returnSum) {
+        this.returnSum = returnSum;
+    }
+
+    public void setNetProfit(double netProfit) {
+        this.netProfit = netProfit;
+    }
+
+    public void setCoefficient(double coefficient) {
+        this.coefficient = coefficient;
+    }
+
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
+    }
+
+    public void setExpress(boolean express) {
+        isExpress = express;
     }
 
     @Override
