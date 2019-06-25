@@ -48,7 +48,8 @@ public class JdbcBetRepositoryImpl implements BetRepository {
                 .addValue("event", bet.getEvent())
                 .addValue("net_profit", bet.getNetProfit())
                 .addValue("return_sum", bet.getReturnSum())
-                .addValue("is_express", bet.isExpress());
+                .addValue("is_express", bet.isExpress())
+                .addValue("user_id", userId);
 
         if (bet.isNew()) {
             Number newId = insertBet.executeAndReturnKey(map);

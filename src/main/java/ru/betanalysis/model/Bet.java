@@ -57,6 +57,8 @@ public class Bet extends AbstractBaseEntity {
      */
     private boolean isExpress;
 
+    public Bet() {
+    }
 
     public Bet(String event, double value, String currency, double returnSum, double netProfit,
                double coefficient, LocalDateTime dateTime, boolean isExpress) {

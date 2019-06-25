@@ -2,6 +2,7 @@ package ru.betanalysis.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import ru.betanalysis.model.Bet;
 import ru.betanalysis.repository.BetRepository;
 
@@ -32,6 +33,8 @@ public class BetServiceImpl implements BetService {
 
     @Override
     public List<Bet> getBetweenDateTimes(LocalDateTime startDateTime, LocalDateTime endDateTime, int userId) {
+        Assert.notNull(startDateTime, "startDateTime must not be null");
+        Assert.notNull(endDateTime, "endDateTime  must not be null");
         return repository.getBetween(startDateTime, endDateTime, userId);
     }
 
@@ -41,12 +44,14 @@ public class BetServiceImpl implements BetService {
     }
 
     @Override
-    public void update(Bet Bet, int userId) {
-        checkNotFoundWithId(repository.save(Bet, userId), Bet.getId());
+    public void update(Bet bet, int userId) {
+        Assert.notNull(bet, "bet must not be null");
+        checkNotFoundWithId(repository.save(bet, userId), bet.getId());
     }
 
     @Override
-    public Bet create(Bet Bet, int userId) {
-        return repository.save(Bet, userId);
+    public Bet create(Bet bet, int userId) {
+        Assert.notNull(bet, "bet must not be null");
+        return repository.save(bet, userId);
     }
 }

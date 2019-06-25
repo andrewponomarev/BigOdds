@@ -25,43 +25,25 @@ public class InMemoryBetRepositoryImpl implements BetRepository {
 
     private static final Logger log = LoggerFactory.getLogger(InMemoryBetRepositoryImpl.class);
 
-    // Map  userId -> (betId-> bet)
-    private Map<Integer, Map<Integer, Bet>> repository = new ConcurrentHashMap<>();
-
-    private AtomicInteger counter = new AtomicInteger(0);
-
-    {
-        BetUtil.BETS.forEach(bet -> save(bet,USER_ID));
-
-        save(new Bet("Admin bet1", 0.0, "123", 0.0,
-                0.0, 0.0,
-                LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), true), ADMIN_ID);
-        save(new Bet("Admin bet2", 0.0, "123", 0.0,
-                0.0, 0.0,
-                LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), true), ADMIN_ID);
-    }
+    // Map  userId -> (mealId-> meal)
+    private Map<Integer, InMemoryBaseRepositoryImpl<Bet>> usersBetsMap = new ConcurrentHashMap<>();
 
     @Override
-    public Bet save(Bet bet, int userId) {
-        Map<Integer, Bet> bets = repository.computeIfAbsent(userId, ConcurrentHashMap::new);
-        if (bet.isNew()) {
-            bet.setId(counter.incrementAndGet());
-            bets.put(bet.getId(), bet);
-            return bet;
-        }
-        // treat case: update, but absent in storage
-        return bets.computeIfPresent(bet.getId(), (id, oldBet) -> bet);
+    public Bet save(Bet meal, int userId) {
+        Objects.requireNonNull(meal, "meal must not be null");
+        InMemoryBaseRepositoryImpl<Bet> meals = usersBetsMap.computeIfAbsent(userId, uid -> new InMemoryBaseRepositoryImpl<>());
+        return meals.save(meal);
     }
 
     @Override
     public boolean delete(int id, int userId) {
-        Map<Integer, Bet> bets = repository.get(userId);
-        return bets != null && bets.remove(id) != null;
+        InMemoryBaseRepositoryImpl<Bet> bets = usersBetsMap.get(userId);
+        return bets != null && bets.delete(id);
     }
 
     @Override
     public Bet get(int id, int userId) {
-        Map<Integer, Bet> bets = repository.get(userId);
+        InMemoryBaseRepositoryImpl<Bet> bets = usersBetsMap.get(userId);
         return bets == null ? null : bets.get(id);
     }
 
@@ -72,13 +54,15 @@ public class InMemoryBetRepositoryImpl implements BetRepository {
 
     @Override
     public List<Bet> getBetween(LocalDateTime startDateTime, LocalDateTime endDateTime, int userId) {
+        Objects.requireNonNull(startDateTime, "startDateTime must not be null");
+        Objects.requireNonNull(endDateTime, "endDateTime must not be null");
         return getAllFiltered(userId, bet -> Util.isBetween(bet.getDateTime(), startDateTime, endDateTime));
     }
 
     private List<Bet> getAllFiltered(int userId, Predicate<Bet> filter) {
-        Map<Integer, Bet> bets = repository.get(userId);
-        return CollectionUtils.isEmpty(bets) ? Collections.emptyList() :
-                bets.values().stream()
+        InMemoryBaseRepositoryImpl<Bet> bets = usersBetsMap.get(userId);
+        return bets == null ? Collections.emptyList() :
+                bets.getCollection().stream()
                         .filter(filter)
                         .sorted(Comparator.comparing(Bet::getDateTime).reversed())
                         .collect(Collectors.toList());

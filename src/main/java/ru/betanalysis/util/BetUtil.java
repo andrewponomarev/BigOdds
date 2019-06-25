@@ -11,14 +11,17 @@ import java.util.List;
 
 public class BetUtil {
 
+    private  BetUtil() {
+    }
+
     public static List<Bet> BETS = Arrays.asList(
-            new Bet(null, "Россия - Англия", 123, "123", 123,
+            new Bet("Россия - Англия", 123, "123", 123,
                     123, 1.23,
                     LocalDateTime.of(2015, Month.MAY, 30, 10, 0), false),
-            new Bet(null, "Россия - Парагвай", 321, "321", 321,
+            new Bet( "Россия - Парагвай", 321, "321", 321,
                     321, 3.21,
                     LocalDateTime.of(2015, Month.MAY, 30, 10, 0), false),
-            new Bet(null, "Парагвай - Англия", 222, "222", 222,
+            new Bet("Парагвай - Англия", 222, "222", 222,
                     222, 2.22,
                     LocalDateTime.of(2015, Month.MAY, 30, 10, 0), false)
     );

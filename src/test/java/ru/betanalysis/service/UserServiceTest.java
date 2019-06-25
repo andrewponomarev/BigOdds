@@ -45,6 +45,7 @@ public class UserServiceTest {
                 LocalDateTime.now(), Role.ROLE_USER);
         User created = service.create(newUser);
         newUser.setId(created.getId());
+        assertMatch(newUser, created);
         assertMatch(service.getAll(), ADMIN, newUser, USER);
     }
 

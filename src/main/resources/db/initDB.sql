@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS user_roles;
 DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS bets;
 DROP SEQUENCE IF EXISTS global_seq;
 
 CREATE SEQUENCE global_seq START 100000;
@@ -31,12 +32,13 @@ CREATE TABLE bets (
   id          INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
   user_id     INTEGER   NOT NULL,
   date_time   TIMESTAMP NOT NULL,
-  coefficient DOUBLE    NOT NULL,
+  value       NUMERIC (3),
+  coefficient NUMERIC(3)    NOT NULL,
   currency    TEXT      NOT NULL,
   event       TEXT              ,
-  net_profit  DOUBLE            ,
-  return_sum  DOUBLE            ,
-  is_express  BOOL DEFAUL FALSE ,
+  net_profit  NUMERIC(3)        ,
+  return_sum  NUMERIC(3)        ,
+  is_express  BOOL DEFAULT FALSE ,
   FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 CREATE UNIQUE INDEX bets_unique_user_datetime_idx
