@@ -15,7 +15,7 @@ import java.util.Collection;
 
 import static ru.betanalysis.web.user.UserTestData.ADMIN;
 
-@ContextConfiguration("classpath:spring/spring-app.xml")
+@ContextConfiguration({"classpath:spring/spring-app.xml", "classpath:spring/inmemory.xml"})
 @RunWith(SpringRunner.class)
 public class InMemoryAdminRestControllerSpringTest {
 
