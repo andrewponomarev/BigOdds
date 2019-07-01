@@ -34,7 +34,7 @@ public class InMemoryBaseRepositoryImpl<T extends AbstractBaseEntity> {
         return entryMap.get(id);
     }
 
-    Collection<T> getCollection() {
+    public Collection<T> getCollection() {
         return entryMap.values();
     }
 }
