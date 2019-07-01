@@ -14,9 +14,18 @@ import java.util.Set;
 /**
  * Пользователь
  */
+@NamedQueries({
+        @NamedQuery(name = User.DELETE, query = "DELETE FROM User u WHERE u.id=:id"),
+        @NamedQuery(name = User.BY_EMAIL, query = "SELECT u FROM User u LEFT JOIN FETCH u.roles WHERE u.email=?1"),
+        @NamedQuery(name = User.ALL_SORTED, query = "SELECT u FROM User u LEFT JOIN FETCH u.roles ORDER BY u.name, u.email"),
+})
 @Entity
 @Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = "email", name = "users_unique_email_idx")})
 public class User extends AbstractNamedEntity  {
+
+    public static final String DELETE = "User.delete";
+    public static final String BY_EMAIL = "User.getByEmail";
+    public static final String ALL_SORTED = "User.getAllSorted";
 
     /**
      * email;
@@ -44,7 +53,7 @@ public class User extends AbstractNamedEntity  {
     /**
      * Имя
      */
-    @Column(name = "firstdname", nullable = true)
+    @Column(name = "firstname", nullable = true)
     private String firstName;
 
     /**
@@ -85,6 +94,7 @@ public class User extends AbstractNamedEntity  {
     }
 
     public User(User other) {
+        super(other.getId(), other.getName());
         this.email = other.email;
         this.password = other.password;
         this.secondName = other.secondName;
