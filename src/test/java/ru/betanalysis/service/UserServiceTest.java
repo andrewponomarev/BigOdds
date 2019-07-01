@@ -40,7 +40,7 @@ public class UserServiceTest {
 
     @Test
     public void create() throws Exception {
-        User newUser = new User(null, "user", "email@mail.ru", "password",
+        User newUser = new User(null, "user", "email2@mail.ru", "password",
                 "secondName", "firstName", "phoneNumber",
                 LocalDateTime.now(), Role.ROLE_USER);
         User created = service.create(newUser);
@@ -51,7 +51,7 @@ public class UserServiceTest {
 
     @Test(expected = DataAccessException.class)
     public void duplicateMailCreate() throws Exception {
-        service.create(new User(null, "user", "email@mail.ru", "password",
+        service.create(new User(null, "user", "email@mail.com", "password",
                 "secondName", "firstName", "phoneNumber",
                 LocalDateTime.now(), Role.ROLE_USER));
     }
@@ -80,7 +80,7 @@ public class UserServiceTest {
 
     @Test
     public void getByEmail() throws Exception {
-        User user = service.getByEmail("user@yandex.ru");
+        User user = service.getByEmail("email@mail.com");
         assertMatch(user, USER);
     }
 
@@ -88,7 +88,7 @@ public class UserServiceTest {
     public void update() throws Exception {
         User updated = new User(USER);
         updated.setName("UpdatedName");
-        service.update(updated);
+        service.update(new User(updated));
         assertMatch(service.get(USER_ID), updated);
     }
 

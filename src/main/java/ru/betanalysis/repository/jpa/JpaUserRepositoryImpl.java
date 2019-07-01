@@ -44,6 +44,7 @@ public class JpaUserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    @Transactional
     public boolean delete(int id) {
 
 /*      User ref = em.getReference(User.class, id);

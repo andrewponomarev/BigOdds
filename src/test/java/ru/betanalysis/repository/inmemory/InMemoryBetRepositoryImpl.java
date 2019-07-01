@@ -31,19 +31,19 @@ public class InMemoryBetRepositoryImpl implements BetRepository {
     @Override
     public Bet save(Bet meal, int userId) {
         Objects.requireNonNull(meal, "meal must not be null");
-        InMemoryBaseRepositoryImpl<Bet> meals = usersBetsMap.computeIfAbsent(userId, uid -> new InMemoryBaseRepositoryImpl<>());
+        var meals = usersBetsMap.computeIfAbsent(userId, uid -> new InMemoryBaseRepositoryImpl<>());
         return meals.save(meal);
     }
 
     @Override
     public boolean delete(int id, int userId) {
-        InMemoryBaseRepositoryImpl<Bet> bets = usersBetsMap.get(userId);
+        var bets = usersBetsMap.get(userId);
         return bets != null && bets.delete(id);
     }
 
     @Override
     public Bet get(int id, int userId) {
-        InMemoryBaseRepositoryImpl<Bet> bets = usersBetsMap.get(userId);
+        var bets = usersBetsMap.get(userId);
         return bets == null ? null : bets.get(id);
     }
 
@@ -60,7 +60,7 @@ public class InMemoryBetRepositoryImpl implements BetRepository {
     }
 
     private List<Bet> getAllFiltered(int userId, Predicate<Bet> filter) {
-        InMemoryBaseRepositoryImpl<Bet> bets = usersBetsMap.get(userId);
+        var bets = usersBetsMap.get(userId);
         return bets == null ? Collections.emptyList() :
                 bets.getCollection().stream()
                         .filter(filter)

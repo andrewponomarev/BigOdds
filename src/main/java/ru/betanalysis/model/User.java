@@ -94,6 +94,7 @@ public class User extends AbstractNamedEntity  {
     }
 
     public User(User other) {
+        super(other.getId(), other.getName());
         this.email = other.email;
         this.password = other.password;
         this.secondName = other.secondName;
