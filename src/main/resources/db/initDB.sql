@@ -32,12 +32,12 @@ CREATE TABLE bets (
   id          INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
   user_id     INTEGER   NOT NULL,
   date_time   TIMESTAMP NOT NULL,
-  value       NUMERIC (3),
-  coefficient NUMERIC(3)    NOT NULL,
+  value       NUMERIC (20,3) NOT NULL,
+  coefficient NUMERIC (20,3) NOT NULL,
   currency    TEXT      NOT NULL,
-  event       TEXT              ,
-  net_profit  NUMERIC(3)        ,
-  return_sum  NUMERIC(3)        ,
+  event       TEXT       NOT NULL,
+  net_profit  NUMERIC(20,3)        ,
+  return_sum  NUMERIC(20,3)        ,
   is_express  BOOL DEFAULT FALSE ,
   FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );

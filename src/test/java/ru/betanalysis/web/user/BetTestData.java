@@ -14,21 +14,21 @@ import static ru.betanalysis.model.AbstractBaseEntity.START_SEQ;
 public class BetTestData {
 
     public static final int BET1_ID = START_SEQ + 2;
-    public static final int ADMIN_BET_ID = START_SEQ + 8;
+    public static final int ADMIN_BET_ID = START_SEQ + 5;
 
-    public static final Bet BET1 = new Bet("Россия - Англия", 123, "123", 123, 123, 1.23,
+    public static final Bet BET1 = new Bet(BET1_ID,"Россия - Англия", 123, "123", 123, 123, 1.23,
             LocalDateTime.of(2015, Month.MAY, 30, 10, 0), false);
-    public static final Bet BET2 = new Bet( "Россия - Парагвай", 321, "321", 321, 321, 3.21,
+    public static final Bet BET2 = new Bet(BET1_ID+1, "Россия - Парагвай", 321, "321", 321, 321, 3.21,
                      LocalDateTime.of(2015, Month.MAY, 30, 15, 0), false);
-    public static final Bet BET3 = new Bet("Парагвай - Англия", 222, "222", 222, 222, 2.22,
+    public static final Bet BET3 = new Bet(BET1_ID + 2,"Парагвай - Англия", 222, "222", 222, 222, 2.22,
                     LocalDateTime.of(2015, Month.MAY, 30, 20, 0), false);
-    public static final Bet ADMIN_BET1 = new Bet("Admin bet1", 0.0, "'123'", 0.0, 0.0, 0.0,
-            LocalDateTime.of(2015, Month.MAY, 30, 10, 0), false);
-    public static final Bet ADMIN_BET2 = new Bet("Admin bet2", 0.0, "'123'", 0.0, 0.0, 0.0,
-            LocalDateTime.of(2015, Month.MAY, 30, 20, 0), false);
+    public static final Bet ADMIN_BET1 = new Bet(ADMIN_BET_ID,"Admin bet 1", 0.0, "123", 0.0, 0.0, 0.0,
+            LocalDateTime.of(2015, Month.MAY, 30, 10, 0), true);
+    public static final Bet ADMIN_BET2 = new Bet(ADMIN_BET_ID + 1,"Admin bet 2", 0.0, "123", 0.0, 0.0, 0.0,
+            LocalDateTime.of(2015, Month.MAY, 30, 20, 0), true);
 
 
-    public static final List<Bet> BETS = Arrays.asList(BET1, BET2, BET3);
+    public static final List<Bet> BETS = List.of(BET3, BET2, BET1);
 
     public static Bet getCreated() {
        return new Bet(null, "Созданная ставка", 432, "432", 432, 432, 4.32,
@@ -41,15 +41,15 @@ public class BetTestData {
     }
 
     public static void assertMatch(Bet actual, Bet expected) {
-        assertThat(actual).isEqualToComparingFieldByField(expected);
+        assertThat(actual).isEqualToIgnoringGivenFields(expected, "user");
     }
 
     public static void assertMatch(Iterable<Bet> actual, Bet... expected) {
-        assertMatch(actual, Arrays.asList(expected));
+        assertMatch(actual, List.of(expected));
     }
 
     public static void assertMatch(Iterable<Bet> actual, Iterable<Bet> expected) {
-        assertThat(actual).usingFieldByFieldElementComparator().isEqualTo(expected);
+        assertThat(actual).usingElementComparatorIgnoringFields("user").isEqualTo(expected);
     }
 
 }
