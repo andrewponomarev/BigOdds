@@ -4,18 +4,17 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringRunner;
+import ru.betanalysis.Profiles;
 import ru.betanalysis.model.Role;
 import ru.betanalysis.model.User;
-import ru.betanalysis.service.UserService;
 import ru.betanalysis.util.exception.NotFoundException;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 import static ru.betanalysis.web.user.UserTestData.*;
@@ -27,6 +26,7 @@ import static ru.betanalysis.web.user.UserTestData.*;
 })
 @RunWith(SpringRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
+@ActiveProfiles(Profiles.ACTIVE_DB)
 public class UserServiceTest {
 
     static {
