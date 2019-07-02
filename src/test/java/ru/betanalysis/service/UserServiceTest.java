@@ -9,7 +9,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringRunner;
-import ru.betanalysis.Profiles;
+import ru.betanalysis.ActiveDbProfileResolver;
 import ru.betanalysis.model.Role;
 import ru.betanalysis.model.User;
 import ru.betanalysis.util.exception.NotFoundException;
@@ -26,7 +26,7 @@ import static ru.betanalysis.web.user.UserTestData.*;
 })
 @RunWith(SpringRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
-@ActiveProfiles(Profiles.ACTIVE_DB)
+@ActiveProfiles(resolver = ActiveDbProfileResolver.class)
 public class UserServiceTest {
 
     static {
