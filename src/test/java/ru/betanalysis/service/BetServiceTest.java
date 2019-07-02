@@ -7,13 +7,11 @@ import org.junit.rules.ExpectedException;
 import org.junit.rules.Stopwatch;
 import org.junit.runner.Description;
 import org.junit.runner.RunWith;
-//import org.slf4j.bridge.SLF4JBridgeHandler;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.betanalysis.model.Bet;
 import ru.betanalysis.util.exception.NotFoundException;
@@ -25,8 +23,9 @@ import java.util.concurrent.TimeUnit;
 import static org.slf4j.LoggerFactory.getLogger;
 import static ru.betanalysis.web.user.BetTestData.*;
 import static ru.betanalysis.web.user.UserTestData.ADMIN_ID;
-import static ru.betanalysis.web.user.UserTestData.USER;
 import static ru.betanalysis.web.user.UserTestData.USER_ID;
+
+//import org.slf4j.bridge.SLF4JBridgeHandler;
 
 @ContextConfiguration({
         "classpath:spring/spring-app.xml",
@@ -36,7 +35,7 @@ import static ru.betanalysis.web.user.UserTestData.USER_ID;
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 public class BetServiceTest {
 
-    private static final Logger log = getLogger(BetServiceTest.class);
+    private static final Logger log = getLogger("result");
 
     private static StringBuilder results = new StringBuilder();
 
