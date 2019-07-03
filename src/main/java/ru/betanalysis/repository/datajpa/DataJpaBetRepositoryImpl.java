@@ -1,4 +1,4 @@
-package ru.betanalysis.repository.dataJpa;
+package ru.betanalysis.repository.datajpa;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;

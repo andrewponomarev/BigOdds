@@ -1,4 +1,4 @@
-package ru.betanalysis.repository.dataJpa;
+package ru.betanalysis.repository.datajpa;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;

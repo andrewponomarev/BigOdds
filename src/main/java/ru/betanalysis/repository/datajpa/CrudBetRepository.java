@@ -1,4 +1,4 @@
-package ru.betanalysis.repository.dataJpa;
+package ru.betanalysis.repository.datajpa;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import ru.betanalysis.model.Bet;
