@@ -1,7 +1,7 @@
 package ru.betanalysis.web;
 
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import ru.betanalysis.Profiles;
 import ru.betanalysis.model.Bet;
 import ru.betanalysis.web.bet.BetRestController;
 
@@ -22,13 +22,16 @@ import static ru.betanalysis.util.DateTimeUtil.parseLocalTime;
 
 public class BetServlet extends HttpServlet {
 
-    private ConfigurableApplicationContext springContext;
+    private ClassPathXmlApplicationContext springContext;
     private BetRestController betController;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        springContext = new ClassPathXmlApplicationContext("spring/spring-app.xml","spring/spring-db.xml");
+        springContext = new ClassPathXmlApplicationContext(new String[]{"spring/spring-app.xml", "spring/spring-db.xml"}, false);
+//       springContext.setConfigLocations("spring/spring-app.xml", "spring/spring-db.xml");
+        springContext.getEnvironment().setActiveProfiles(Profiles.getActiveDbProfile(), Profiles.REPOSITORY_IMPLEMENTATION);
+        springContext.refresh();
         betController = springContext.getBean(BetRestController.class);
     }
 
