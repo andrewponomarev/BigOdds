@@ -13,7 +13,7 @@ import static ru.betanalysis.web.user.UserTestData.ADMIN_ID;
 import static ru.betanalysis.web.user.UserTestData.USER_ID;
 
 
-public class AbstractBetServiceTest extends AbstractServiceTest {
+public abstract class AbstractBetServiceTest extends AbstractServiceTest {
 
     @Autowired
     private BetService service;

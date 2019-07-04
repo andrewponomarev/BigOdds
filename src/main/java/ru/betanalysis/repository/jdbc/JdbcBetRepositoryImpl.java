@@ -1,6 +1,7 @@
 package ru.betanalysis.repository.jdbc;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -9,14 +10,16 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
+import ru.betanalysis.Profiles;
 import ru.betanalysis.model.Bet;
 import ru.betanalysis.repository.BetRepository;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
-public class JdbcBetRepositoryImpl implements BetRepository {
+public abstract class JdbcBetRepositoryImpl<T> implements BetRepository {
 
     private static final RowMapper<Bet> ROW_MAPPER = BeanPropertyRowMapper.newInstance(Bet.class);
 
@@ -36,6 +39,33 @@ public class JdbcBetRepositoryImpl implements BetRepository {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
 
+    protected abstract T toDbDateTime(LocalDateTime ldt);
+
+    @Repository
+    @Profile(Profiles.POSTGRES_DB)
+    public static class Java8JdbcMealRepositoryImpl extends JdbcBetRepositoryImpl<LocalDateTime> {
+        public Java8JdbcMealRepositoryImpl(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+            super(jdbcTemplate, namedParameterJdbcTemplate);
+        }
+
+        @Override
+        protected LocalDateTime toDbDateTime(LocalDateTime ldt) {
+            return ldt;
+        }
+    }
+
+    @Repository
+    @Profile(Profiles.HSQL_DB)
+    public static class TimestampJdbcMealRepositoryImpl extends JdbcBetRepositoryImpl<Timestamp> {
+        public TimestampJdbcMealRepositoryImpl(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+            super(jdbcTemplate, namedParameterJdbcTemplate);
+        }
+
+        @Override
+        protected Timestamp toDbDateTime(LocalDateTime ldt) {
+            return Timestamp.valueOf(ldt);
+        }
+    }
 
     @Override
     public Bet save(Bet bet, int userId) {
@@ -90,6 +120,6 @@ public class JdbcBetRepositoryImpl implements BetRepository {
     public List<Bet> getBetween(LocalDateTime startDate, LocalDateTime endDate, int userId) {
         return jdbcTemplate.query(
                 "SELECT * FROM bets WHERE user_id=?  AND date_time BETWEEN  ? AND ? ORDER BY date_time DESC",
-                ROW_MAPPER, userId, startDate, endDate);
+                ROW_MAPPER, userId, toDbDateTime(startDate), toDbDateTime(endDate));
     }
 }
