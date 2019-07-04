@@ -57,7 +57,7 @@ public class JdbcBetRepositoryImpl implements BetRepository {
         } else {
             if (namedParameterJdbcTemplate.update("" +
                             "UPDATE bets" +
-                            "   SET id=:id, value=:value, date_time=:date_time " +
+                            "   SET id=:id, value=:value, date_time=:date_time, " +
                             "coefficient=:coefficient, currency=:currency, event=:event," +
                             "net_profit=:net_profit, return_sum=:return_sum, is_express=:is_express"+
                             " WHERE id=:id AND user_id=:user_id"
