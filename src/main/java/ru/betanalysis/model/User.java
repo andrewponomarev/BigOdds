@@ -50,25 +50,25 @@ public class User extends AbstractNamedEntity  {
     /**
      * Фамилия
      */
-    @Column(name = "secondname", nullable = true)
+    @Column(name = "second_name", nullable = true)
     private String secondName;
 
     /**
      * Имя
      */
-    @Column(name = "firstname", nullable = true)
+    @Column(name = "first_name", nullable = true)
     private String firstName;
 
     /**
      * Номер телефона
      */
-    @Column(name = "phonenumber", nullable = true)
+    @Column(name = "phone_number", nullable = true)
     private String phoneNumber;
 
     /**
      * Дата рождения
      */
-    @Column(name = "datetime", nullable = true)
+    @Column(name = "date_time", nullable = true)
     private LocalDateTime dateTime;
 
     /**
