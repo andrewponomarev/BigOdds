@@ -25,4 +25,6 @@ public interface BetService {
     void update(Bet Bet, int userId) throws NotFoundException;
 
     Bet create(Bet Bet, int userId);
+
+    Bet getWithUser(int id, int userId);
 }

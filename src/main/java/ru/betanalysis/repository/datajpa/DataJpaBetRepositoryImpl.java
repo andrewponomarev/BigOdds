@@ -52,4 +52,9 @@ public class DataJpaBetRepositoryImpl implements BetRepository {
     public List<Bet> getBetween(LocalDateTime startDate, LocalDateTime endDate, int userId) {
         return crudBetRepository.getBetween(startDate, endDate, userId);
     }
+
+    @Override
+    public Bet getWithUser(int id, int userId) {
+        return crudBetRepository.getWithUser(id, userId);
+    }
 }

@@ -54,4 +54,9 @@ public class BetServiceImpl implements BetService {
         Assert.notNull(bet, "bet must not be null");
         return repository.save(bet, userId);
     }
+
+    @Override
+    public Bet getWithUser(int id, int userId) {
+        return checkNotFoundWithId(repository.getWithUser(id, userId), id);
+    }
 }

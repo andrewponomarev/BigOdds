@@ -3,7 +3,6 @@ package ru.betanalysis.repository;
 import ru.betanalysis.model.Bet;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.List;
 
 public interface BetRepository {
@@ -22,5 +21,9 @@ public interface BetRepository {
 
     // ORDERED dateTime desc
     List<Bet> getBetween(LocalDateTime startDate, LocalDateTime endDate, int userId);
+
+    default Bet getWithUser(int id, int userId) {
+        throw new UnsupportedOperationException();
+    }
 }
 

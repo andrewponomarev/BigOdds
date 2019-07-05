@@ -33,4 +33,7 @@ public interface CrudBetRepository extends JpaRepository<Bet, Integer> {
             "b.dateTime BETWEEN :startDate AND :endDate ORDER BY b.dateTime DESC")
     List<Bet> getBetween(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime c, @Param("userId") int userId);
 
+    @Query("SELECT b FROM Bet b JOIN FETCH b.user WHERE b.id = ?1 and b.user.id = ?2")
+    Bet getWithUser(int id, int userId);
+
 }

@@ -16,7 +16,7 @@ import static ru.betanalysis.web.user.UserTestData.USER_ID;
 public abstract class AbstractBetServiceTest extends AbstractServiceTest {
 
     @Autowired
-    private BetService service;
+    protected BetService service;
 
     @Test
     public void delete() throws Exception {
