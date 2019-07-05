@@ -3,7 +3,7 @@ DELETE FROM users;
 DELETE FROM bets;
 ALTER SEQUENCE global_seq RESTART WITH 100000;
 
-INSERT INTO users (name, email, password, secondname, firstname, phonenumber) VALUES
+INSERT INTO users (name, email, password, second_name, first_name, phone_number) VALUES
   ('user', 'email@mail.com', 'password', 'secondName', 'firstName', 'phoneNumber'),
   ('admin', 'admin@mail.com', 'password', 'secondName', 'firstName', 'phoneNumber');
 

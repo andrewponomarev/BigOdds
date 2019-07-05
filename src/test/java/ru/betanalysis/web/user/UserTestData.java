@@ -4,7 +4,6 @@ import ru.betanalysis.model.Role;
 import ru.betanalysis.model.User;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,8 +20,10 @@ public class UserTestData {
             "secondName", "firstName", "phoneNumber",
             LocalDateTime.now(), Role.ROLE_ADMIN);
 
+    public static String[] IGNORING_FIELDS = {"registered","dateTime", "roles", "bets"};
+
     public static void assertMatch(User actual, User expected) {
-        assertThat(actual).isEqualToIgnoringGivenFields(expected, "registered","dateTime", "roles");
+        assertThat(actual).isEqualToIgnoringGivenFields(expected, IGNORING_FIELDS);
     }
 
     public static void assertMatch(Iterable<User> actual, User... expected) {
@@ -30,7 +31,6 @@ public class UserTestData {
     }
 
     public static void assertMatch(Iterable<User> actual, Iterable<User> expected) {
-        assertThat(actual).usingElementComparatorIgnoringFields(
-                "registered", "dateTime", "roles").isEqualTo(expected);
+        assertThat(actual).usingElementComparatorIgnoringFields(IGNORING_FIELDS).isEqualTo(expected);
     }
 }

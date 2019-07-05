@@ -13,10 +13,10 @@ CREATE TABLE users
   password         VARCHAR                 NOT NULL,
   registered       TIMESTAMP DEFAULT now() NOT NULL,
   enabled          BOOL DEFAULT TRUE       NOT NULL,
-  secondName       VARCHAR                         ,
-  firstName        VARCHAR                         ,
-  datetime         TIMESTAMP DEFAULT now()         ,
-  phoneNumber      VARCHAR
+  second_name       VARCHAR                         ,
+  first_name        VARCHAR                         ,
+  date_time         TIMESTAMP DEFAULT now()         ,
+  phone_number      VARCHAR
 );
 CREATE UNIQUE INDEX users_unique_email_idx ON users (email);
 
