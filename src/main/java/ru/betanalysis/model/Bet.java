@@ -4,8 +4,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-import java.util.Currency;
-import java.util.Set;
 
 
 /**
@@ -43,8 +41,7 @@ public class Bet extends AbstractBaseEntity {
      * Размер ставки
      *
      */
-    @Column(name="value", nullable = false)
-    @NotNull
+    @Column(name="value")
     private double value;
 
     /**
@@ -69,8 +66,7 @@ public class Bet extends AbstractBaseEntity {
     /**
      * Коэффициент
      */
-    @Column(name="coefficient", nullable = false)
-    @NotNull
+    @Column(name="coefficient")
     private double coefficient;
 
     /**

@@ -76,4 +76,22 @@ public abstract class AbstractBetServiceTest extends AbstractServiceTest {
                 LocalDate.of(2015, Month.MAY, 30),
                 LocalDate.of(2015, Month.MAY, 30), USER_ID), BET3, BET2, BET1);
     }
+
+    //todo: hibernate не валидирует ставку
+    // org.hibernate.cfg.beanvalidation.BeanValidationEventListener.validate()
+//    @Test
+//    public void testValidation() throws Exception {
+//        validateRootCause(() -> service.create(
+//                new Bet(10000000,"  ", 123, "123", 123, 123, 1.23,
+//                LocalDateTime.of(2015, Month.MAY, 30, 23, 59), false)
+//                , USER_ID), ConstraintViolationException.class);
+//        validateRootCause(() -> service.create(
+//                new Bet(10000000,"Россия - Англия", 123, "  ", 123, 123, 1.23,
+//                        LocalDateTime.of(2015, Month.MAY, 30, 23, 59), false)
+//                , USER_ID), ConstraintViolationException.class);
+//        validateRootCause(() -> service.create(
+//                new Bet(10000000,"Россия - Англия", 123, "123", 123, 123, 1.23,
+//                        null, false)
+//                , USER_ID), ConstraintViolationException.class);
+//    }
 }

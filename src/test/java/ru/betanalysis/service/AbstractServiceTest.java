@@ -1,5 +1,6 @@
 package ru.betanalysis.service;
 
+import org.junit.Assert;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
@@ -13,6 +14,9 @@ import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ru.betanalysis.ActiveDbProfileResolver;
 import ru.betanalysis.TimingRules;
+
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static ru.betanalysis.util.ValidationUtil.getRootCause;
 
 @ContextConfiguration({
         "classpath:spring/spring-app.xml",
@@ -34,5 +38,15 @@ abstract public class AbstractServiceTest {
     static {
         // needed only for java.util.logging (postgres driver)
         //SLF4JBridgeHandler.install();
+    }
+
+    //  Check root cause in JUnit: https://github.com/junit-team/junit4/pull/778
+    public <T extends Throwable> void validateRootCause(Runnable runnable, Class<T> exceptionClass) {
+        try {
+            runnable.run();
+            Assert.fail("Expected " + exceptionClass.getName());
+        } catch (Exception e) {
+            Assert.assertThat(getRootCause(e), instanceOf(exceptionClass));
+        }
     }
 }
