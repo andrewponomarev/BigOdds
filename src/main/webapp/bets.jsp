@@ -5,13 +5,12 @@
 <%--<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>--%>
 <html>
 <head>
-    <title>Bet list</title>
+    <title>Bets management</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 <section>
-    <h3><a href="index.html">Home</a></h3>
-    <h2>Bets</h2>
+    <h3>Bets</h3>
     <form method="post" action="bets?action=filter">
         <dl>
             <dt>From Date:</dt>
