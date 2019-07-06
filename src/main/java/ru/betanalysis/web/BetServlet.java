@@ -1,7 +1,7 @@
 package ru.betanalysis.web;
 
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import ru.betanalysis.Profiles;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 import ru.betanalysis.model.Bet;
 import ru.betanalysis.web.bet.BetRestController;
 
@@ -22,23 +22,13 @@ import static ru.betanalysis.util.DateTimeUtil.parseLocalTime;
 
 public class BetServlet extends HttpServlet {
 
-    private ClassPathXmlApplicationContext springContext;
     private BetRestController betController;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        springContext = new ClassPathXmlApplicationContext(new String[]{"spring/spring-app.xml", "spring/spring-db.xml"}, false);
-//       springContext.setConfigLocations("spring/spring-app.xml", "spring/spring-db.xml");
-        springContext.getEnvironment().setActiveProfiles(Profiles.getActiveDbProfile(), Profiles.REPOSITORY_IMPLEMENTATION);
-        springContext.refresh();
+        WebApplicationContext springContext = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
         betController = springContext.getBean(BetRestController.class);
-    }
-
-    @Override
-    public void destroy() {
-        springContext.close();
-        super.destroy();
     }
 
     @Override
