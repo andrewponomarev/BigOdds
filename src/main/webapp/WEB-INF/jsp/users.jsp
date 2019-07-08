@@ -5,9 +5,9 @@
 <fmt:setBundle basename="messages.app"/>
 
 <html>
-<jsp:include page="fragments/headTag.jsp"/>
+<jsp:include page="../../fragments/headTag.jsp"/>
 <body>
-<jsp:include page="fragments/bodyHeader.jsp"/>
+<jsp:include page="../../fragments/bodyHeader.jsp"/>
 
 <section>
     <h3><fmt:message key="user.title"/></h3>
@@ -35,6 +35,6 @@
         </c:forEach>
     </table>
 </section>
-<jsp:include page="fragments/footer.jsp"/>
+<jsp:include page="../../fragments/footer.jsp"/>
 </body>
 </html>

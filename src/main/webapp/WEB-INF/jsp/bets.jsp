@@ -6,7 +6,7 @@
 <html>
 <head>
     <title>Bets management</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../../css/style.css">
 </head>
 <body>
 <section>

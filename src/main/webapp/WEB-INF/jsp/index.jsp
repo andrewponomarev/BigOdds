@@ -5,9 +5,9 @@
 <fmt:setBundle basename="messages.app"/>
 
 <html>
-<jsp:include page="fragments/headTag.jsp"/>
+<jsp:include page="../../fragments/headTag.jsp"/>
 <body>
-<jsp:include page="fragments/bodyHeader.jsp"/>
+<jsp:include page="../../fragments/bodyHeader.jsp"/>
 <section>
     <form method="post" action="users">
         <fmt:message key="app.login"/>: <select name="userId">
@@ -21,6 +21,6 @@
         <li><a href="bets"><fmt:message key="bet.title"/></a></li>
     </ul>
 </section>
-<jsp:include page="fragments/footer.jsp"/>
+<jsp:include page="../../fragments/footer.jsp"/>
 </body>
 </html>
