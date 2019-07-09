@@ -7,10 +7,8 @@ import org.springframework.cache.CacheManager;
 import org.springframework.dao.DataAccessException;
 import ru.betanalysis.model.Role;
 import ru.betanalysis.model.User;
-import ru.betanalysis.repository.JpaUtil;
 import ru.betanalysis.util.exception.NotFoundException;
 
-import javax.validation.ConstraintViolationException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -24,13 +22,9 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest{
     @Autowired
     private CacheManager cacheManager;
 
-    @Autowired
-    protected JpaUtil jpaUtil;
-
     @Before
     public void setUp() throws Exception {
         cacheManager.getCache("users").clear();
-        jpaUtil.clear2ndLevelHibernateCache();
     }
 
     @Test
@@ -93,27 +87,4 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest{
         assertMatch(all, ADMIN, USER);
     }
 
-    @Test
-    public void testValidation() throws Exception {
-        validateRootCause(() -> service.create(
-                new User(10000000, null, "email@m.com", "password",
-                "secondName", "firstName", "phoneNumber",
-                LocalDateTime.now(), Role.ROLE_USER)),
-                ConstraintViolationException.class);
-        validateRootCause(() -> service.create(
-                new User(10000000, "n", "email@m.com", "password",
-                        "secondName", "firstName", "phoneNumber",
-                        LocalDateTime.now(), Role.ROLE_USER)),
-                ConstraintViolationException.class);
-        validateRootCause(() -> service.create(
-                new User(10000000, "name", "  ", "password",
-                        "secondName", "firstName", "phoneNumber",
-                        LocalDateTime.now(), Role.ROLE_USER)),
-                ConstraintViolationException.class);
-        validateRootCause(() -> service.create(
-                new User(10000000, "name", "email@m.com", "1234",
-                        "secondName", "firstName", "phoneNumber",
-                        LocalDateTime.now(), Role.ROLE_USER)),
-                ConstraintViolationException.class);
-    }
 }
