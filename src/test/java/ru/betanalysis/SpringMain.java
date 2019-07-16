@@ -8,10 +8,10 @@ import ru.betanalysis.web.bet.BetRestController;
 import ru.betanalysis.web.user.AdminRestController;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 public class SpringMain {
@@ -25,7 +25,7 @@ public class SpringMain {
             AdminRestController adminUserController = appCtx.getBean(AdminRestController.class);
             adminUserController.create(new User(null, "userName", "email@mail.ru", "password",
                     "secondName", "firstName", "phoneNumber",
-                    LocalDateTime.now(), Role.ROLE_ADMIN));
+                    new Date(), Role.ROLE_ADMIN));
             System.out.println();
 
             BetRestController BetController = appCtx.getBean(BetRestController.class);

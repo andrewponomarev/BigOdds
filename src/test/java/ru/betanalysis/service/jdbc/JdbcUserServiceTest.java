@@ -5,5 +5,5 @@ import ru.betanalysis.Profiles;
 import ru.betanalysis.service.AbstractUserServiceTest;
 
 @ActiveProfiles(Profiles.JDBC)
-public class JdbcUserServiceTest extends AbstractUserServiceTest {
+    public class JdbcUserServiceTest extends AbstractUserServiceTest {
 }

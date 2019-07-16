@@ -8,7 +8,7 @@ import ru.betanalysis.model.User;
 import ru.betanalysis.repository.JpaUtil;
 
 import javax.validation.ConstraintViolationException;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 public abstract class AbstractJpaUserServiceTest extends AbstractUserServiceTest {
 
@@ -27,22 +27,22 @@ public abstract class AbstractJpaUserServiceTest extends AbstractUserServiceTest
         validateRootCause(() -> service.create(
                 new User(10000000, null, "email@m.com", "password",
                         "secondName", "firstName", "phoneNumber",
-                        LocalDateTime.now(), Role.ROLE_USER)),
+                        new Date(), Role.ROLE_USER)),
                 ConstraintViolationException.class);
         validateRootCause(() -> service.create(
                 new User(10000000, "n", "email@m.com", "password",
                         "secondName", "firstName", "phoneNumber",
-                        LocalDateTime.now(), Role.ROLE_USER)),
+                        new Date(), Role.ROLE_USER)),
                 ConstraintViolationException.class);
         validateRootCause(() -> service.create(
                 new User(10000000, "name", "  ", "password",
                         "secondName", "firstName", "phoneNumber",
-                        LocalDateTime.now(), Role.ROLE_USER)),
+                        new Date(), Role.ROLE_USER)),
                 ConstraintViolationException.class);
         validateRootCause(() -> service.create(
                 new User(10000000, "name", "email@m.com", "1234",
                         "secondName", "firstName", "phoneNumber",
-                        LocalDateTime.now(), Role.ROLE_USER)),
+                        new Date(), Role.ROLE_USER)),
                 ConstraintViolationException.class);
     }
 }

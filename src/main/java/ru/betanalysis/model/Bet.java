@@ -82,8 +82,8 @@ public class Bet extends AbstractBaseEntity {
     /**
      * Признак экспресса
      */
-    @Column(name="is_express")
-    private boolean isExpress;
+    @Column(name="express", columnDefinition = "bool default false")
+    private boolean express;
 
     /**
      * Пользователь
@@ -98,12 +98,12 @@ public class Bet extends AbstractBaseEntity {
     }
 
     public Bet(String event, double value, String currency, double returnSum, double netProfit,
-               double coefficient, LocalDateTime dateTime, boolean isExpress) {
-        this(null, event, value, currency, returnSum, netProfit, coefficient, dateTime, isExpress);
+               double coefficient, LocalDateTime dateTime, boolean express) {
+        this(null, event, value, currency, returnSum, netProfit, coefficient, dateTime, express);
     }
 
     public Bet(Integer id, String event, double value, String currency, double returnSum, double netProfit,
-               double coefficient, LocalDateTime dateTime, boolean isExpress) {
+               double coefficient, LocalDateTime dateTime, boolean express) {
         super(id);
         this.event = event;
         this.value = value;
@@ -112,7 +112,7 @@ public class Bet extends AbstractBaseEntity {
         this.netProfit = netProfit;
         this.coefficient = coefficient;
         this.dateTime = dateTime;
-        this.isExpress = isExpress;
+        this.express = express;
     }
 
     public String getEvent() {
@@ -144,7 +144,7 @@ public class Bet extends AbstractBaseEntity {
     }
 
     public boolean isExpress() {
-        return isExpress;
+        return express;
     }
 
     public void setEvent(String event) {
@@ -176,7 +176,7 @@ public class Bet extends AbstractBaseEntity {
     }
 
     public void setExpress(boolean express) {
-        isExpress = express;
+        this.express = express;
     }
 
     public User getUser() {
@@ -198,7 +198,7 @@ public class Bet extends AbstractBaseEntity {
                 ", netProfit=" + netProfit +
                 ", coefficient=" + coefficient +
                 ", dateTime=" + dateTime +
-                ", isExpress=" + isExpress +
+                ", express=" + express +
                 '}';
     }
 }

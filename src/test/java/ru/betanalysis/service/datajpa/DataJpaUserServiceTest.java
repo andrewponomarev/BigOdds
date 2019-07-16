@@ -15,15 +15,15 @@ import static ru.betanalysis.web.user.UserTestData.*;
 public class DataJpaUserServiceTest extends AbstractJpaUserServiceTest {
 
     @Test
-    public void testGetWithMeals() throws Exception {
-        User user = service.getWithMeals(USER_ID);
+    public void testGetWithBets() throws Exception {
+        User user = service.getWithBets(USER_ID);
         assertMatch(user, USER);
         BetTestData.assertMatch(user.getBets(), BetTestData.BETS);
     }
 
     @Test(expected = NotFoundException.class)
-    public void testGetWithMealsNotFound() throws Exception {
-        service.getWithMeals(1);
+    public void testGetWithBetsNotFound() throws Exception {
+        service.getWithBets(1);
     }
 
 }

@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.betanalysis.model.Bet;
 import ru.betanalysis.repository.BetRepository;
 
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
+@Transactional(readOnly = true)
 public class JdbcBetRepositoryImpl implements BetRepository {
 
     private static final RowMapper<Bet> ROW_MAPPER = BeanPropertyRowMapper.newInstance(Bet.class);
@@ -38,6 +40,7 @@ public class JdbcBetRepositoryImpl implements BetRepository {
 
 
     @Override
+    @Transactional
     public Bet save(Bet bet, int userId) {
         MapSqlParameterSource map = new MapSqlParameterSource()
                 .addValue("id", bet.getId())
@@ -48,7 +51,7 @@ public class JdbcBetRepositoryImpl implements BetRepository {
                 .addValue("event", bet.getEvent())
                 .addValue("net_profit", bet.getNetProfit())
                 .addValue("return_sum", bet.getReturnSum())
-                .addValue("is_express", bet.isExpress())
+                .addValue("express", bet.isExpress())
                 .addValue("user_id", userId);
 
         if (bet.isNew()) {
@@ -59,7 +62,7 @@ public class JdbcBetRepositoryImpl implements BetRepository {
                             "UPDATE bets" +
                             "   SET id=:id, value=:value, date_time=:date_time, " +
                             "coefficient=:coefficient, currency=:currency, event=:event," +
-                            "net_profit=:net_profit, return_sum=:return_sum, is_express=:is_express"+
+                            "net_profit=:net_profit, return_sum=:return_sum, express=:express"+
                             " WHERE id=:id AND user_id=:user_id"
                     , map) == 0) {
                 return null;
@@ -69,6 +72,7 @@ public class JdbcBetRepositoryImpl implements BetRepository {
     }
 
     @Override
+    @Transactional
     public boolean delete(int id, int userId) {
         return jdbcTemplate.update("DELETE FROM bets WHERE id=? AND user_id=?", id, userId) != 0;
     }

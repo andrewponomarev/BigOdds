@@ -2,6 +2,7 @@ package ru.betanalysis.model;
 
 
 import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
@@ -9,87 +10,57 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Пользователь
- */
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @NamedQueries({
         @NamedQuery(name = User.DELETE, query = "DELETE FROM User u WHERE u.id=:id"),
-        @NamedQuery(name = User.BY_EMAIL, query = "SELECT u FROM User u LEFT JOIN FETCH u.roles WHERE u.email=?1"),
+        @NamedQuery(name = User.BY_EMAIL, query = "SELECT DISTINCT u FROM User u LEFT JOIN FETCH u.roles WHERE u.email=?1"),
         @NamedQuery(name = User.ALL_SORTED, query = "SELECT u FROM User u ORDER BY u.name, u.email"),
 })
 @Entity
 @Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = "email", name = "users_unique_email_idx")})
-public class User extends AbstractNamedEntity  {
+public class User extends AbstractNamedEntity {
 
     public static final String DELETE = "User.delete";
     public static final String BY_EMAIL = "User.getByEmail";
     public static final String ALL_SORTED = "User.getAllSorted";
 
-    /**
-     * email;
-     */
     @Column(name = "email", nullable = false, unique = true)
     @Email
     @NotBlank
     @Size(max = 100)
     private String email;
 
-    /**
-     * пароль
-     */
     @Column(name = "password", nullable = false)
     @NotBlank
     @Size(min = 5, max = 100)
     private String password;
 
-    /**
-     * Фамилия
-     */
-    @Column(name = "second_name", nullable = true)
+    @Column(name = "second_name")
     private String secondName;
 
-    /**
-     * Имя
-     */
-    @Column(name = "first_name", nullable = true)
+    @Column(name = "first_name")
     private String firstName;
 
-    /**
-     * Номер телефона
-     */
-    @Column(name = "phone_number", nullable = true)
+    @Column(name = "phone_number")
     private String phoneNumber;
 
-    /**
-     * Дата рождения
-     */
-    @Column(name = "date_time", nullable = true)
-    private LocalDateTime dateTime;
-
-    /**
-     * Активен ли пользователь
-     */
     @Column(name = "enabled", nullable = false, columnDefinition = "bool default true")
     private boolean enabled = true;
 
-    /**
-     * Дата регистрации
-     */
-    @Column(name = "registered", columnDefinition = "timestamp default now()")
+    @Column(name = "registered", nullable = false, columnDefinition = "timestamp default now()")
     @NotNull
     private Date registered = new Date();
 
-    /**
-     * Роли
-     */
-    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @Column(name = "birth_day", nullable = false)
+    @NotNull
+    private Date birthDay = new Date();
+
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "role")
@@ -111,19 +82,19 @@ public class User extends AbstractNamedEntity  {
         this.secondName = other.secondName;
         this.firstName = other.firstName;
         this.phoneNumber = other.phoneNumber;
-        this.dateTime = other.dateTime;
+        this.birthDay = other.birthDay;
         this.enabled = other.enabled;
         this.roles = other.roles;
     }
 
     public User(Integer id, String name, String email, String password, String secondName,
-                String firstName, String phoneNumber, LocalDateTime dateTime, Role role, Role... roles) {
-        this(id, name, email, password, secondName, firstName, phoneNumber, dateTime,
+                String firstName, String phoneNumber, Date birthDay, Role role, Role... roles) {
+        this(id, name, email, password, secondName, firstName, phoneNumber, birthDay,
                 true, EnumSet.of(role, roles));
     }
 
     public User(Integer id, String name, String email, String password, String secondName,
-                String firstName, String phoneNumber, LocalDateTime dateTime,
+                String firstName, String phoneNumber, Date birthDay,
                 boolean enabled, Set<Role> roles) {
         super(id, name);
         this.email = email;
@@ -131,9 +102,10 @@ public class User extends AbstractNamedEntity  {
         this.secondName = secondName;
         this.firstName = firstName;
         this.phoneNumber = phoneNumber;
-        this.dateTime = dateTime;
+        this.birthDay = birthDay;
         this.enabled = enabled;
-        this.roles = roles;
+        this.registered = registered;
+        setRoles(roles);
     }
 
     public String getEmail() {
@@ -156,16 +128,20 @@ public class User extends AbstractNamedEntity  {
         return phoneNumber;
     }
 
-    public LocalDateTime getDateTime() {
-        return dateTime;
-    }
-
     public boolean isEnabled() {
         return enabled;
     }
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public Date getBirthDay() {
+        return birthDay;
+    }
+
+    public void setBirthDay(Date birthDay) {
+        this.birthDay = birthDay;
     }
 
     public Date getRegistered() {
@@ -192,12 +168,9 @@ public class User extends AbstractNamedEntity  {
                 ", secondName='" + secondName + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
-                ", dateTime=" + dateTime +
+                ", birthDay=" + birthDay +
                 ", enabled=" + enabled +
-                ", registered=" + registered +
                 ", roles=" + roles +
-                ", name='" + name + '\'' +
-                ", id=" + id +
                 '}';
     }
 }
