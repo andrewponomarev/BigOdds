@@ -9,7 +9,7 @@ import ru.betanalysis.model.Role;
 import ru.betanalysis.model.User;
 import ru.betanalysis.util.exception.NotFoundException;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 import static ru.betanalysis.web.user.UserTestData.*;
@@ -31,8 +31,8 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest{
     public void create() throws Exception {
         User newUser = new User(null, "user", "email2@mail.ru", "password",
                 "secondName", "firstName", "phoneNumber",
-                LocalDateTime.now(), Role.ROLE_USER);
-        User created = service.create(newUser);
+                new Date(), Role.ROLE_USER);
+        User created = service.create(new User(newUser));
         newUser.setId(created.getId());
         assertMatch(newUser, created);
         assertMatch(service.getAll(), ADMIN, newUser, USER);
@@ -42,7 +42,7 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest{
     public void duplicateMailCreate() throws Exception {
         service.create(new User(null, "user", "email@mail.com", "password",
                 "secondName", "firstName", "phoneNumber",
-                LocalDateTime.now(), Role.ROLE_USER));
+                new Date(), Role.ROLE_USER));
     }
 
     @Test
@@ -86,4 +86,5 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest{
         List<User> all = service.getAll();
         assertMatch(all, ADMIN, USER);
     }
+
 }

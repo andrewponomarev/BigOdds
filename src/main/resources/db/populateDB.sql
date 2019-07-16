@@ -9,10 +9,11 @@ INSERT INTO users (name, email, password, second_name, first_name, phone_number)
 
 INSERT INTO user_roles (role, user_id) VALUES
   ('ROLE_USER', 100000),
-  ('ROLE_ADMIN', 100001);
+  ('ROLE_ADMIN', 100001),
+  ('ROLE_USER', 100001);
 
 
-INSERT INTO bets (event, value, currency, return_sum, net_profit, coefficient, date_time, is_express, user_id)
+INSERT INTO bets (event, value, currency, return_sum, net_profit, coefficient, date_time, express, user_id)
 VALUES ('Россия - Англия', 123, '123', 123, 123, 1.23, '2015-05-30 10:00:00', false, 100000),
        ('Россия - Парагвай', 321, '321', 321, 321, 3.21, '2015-05-30 15:00:00', false, 100000),
        ('Парагвай - Англия', 222, '222', 222, 222, 2.22, '2015-05-30 20:00:00', false, 100000),

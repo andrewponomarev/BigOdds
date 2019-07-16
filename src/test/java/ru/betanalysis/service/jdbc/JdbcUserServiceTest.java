@@ -1,5 +1,9 @@
 package ru.betanalysis.service.jdbc;
 
-//@ActiveProfiles(Profiles.JDBC)
-//public class JdbcUserServiceTest extends AbstractUserServiceTest {
-//}
+import org.springframework.test.context.ActiveProfiles;
+import ru.betanalysis.Profiles;
+import ru.betanalysis.service.AbstractUserServiceTest;
+
+@ActiveProfiles(Profiles.JDBC)
+    public class JdbcUserServiceTest extends AbstractUserServiceTest {
+}

@@ -3,7 +3,7 @@ package ru.betanalysis.web.user;
 import ru.betanalysis.model.Role;
 import ru.betanalysis.model.User;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -15,12 +15,12 @@ public class UserTestData {
 
     public static final User USER = new User(USER_ID, "user", "email@mail.com", "password",
             "secondName", "firstName", "phoneNumber",
-            LocalDateTime.now(), Role.ROLE_USER);
+            new Date(), Role.ROLE_USER);
     public static final User ADMIN = new User(ADMIN_ID, "admin", "admin@mail.com", "password",
             "secondName", "firstName", "phoneNumber",
-            LocalDateTime.now(), Role.ROLE_ADMIN);
+            new Date(), Role.ROLE_ADMIN, Role.ROLE_USER);
 
-    public static String[] IGNORING_FIELDS = {"registered","dateTime", "roles", "bets"};
+    public static String[] IGNORING_FIELDS = {"registered","birthDay", "bets"};
 
     public static void assertMatch(User actual, User expected) {
         assertThat(actual).isEqualToIgnoringGivenFields(expected, IGNORING_FIELDS);

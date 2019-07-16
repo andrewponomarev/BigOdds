@@ -1,11 +1,14 @@
 package ru.betanalysis.service;
 
+import org.hibernate.exception.ConstraintViolationException;
+import org.junit.Assume;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.betanalysis.model.Bet;
 import ru.betanalysis.util.exception.NotFoundException;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Month;
 
 import static ru.betanalysis.web.user.BetTestData.*;
@@ -75,5 +78,24 @@ public abstract class AbstractBetServiceTest extends AbstractServiceTest {
         assertMatch(service.getBetweenDates(
                 LocalDate.of(2015, Month.MAY, 30),
                 LocalDate.of(2015, Month.MAY, 30), USER_ID), BET3, BET2, BET1);
+    }
+
+    //todo: hibernate не валидирует ставку
+    // org.hibernate.cfg.beanvalidation.BeanValidationEventListener.validate()
+    @Test
+    public void testValidation() throws Exception {
+        Assume.assumeTrue(isJpaBased());
+//        validateRootCause(() -> service.create(
+//                new Bet(10000000,"  ", 123, "123", 123, 123, 1.23,
+//                LocalDateTime.of(2015, Month.MAY, 30, 23, 59), false)
+//                , USER_ID), ConstraintViolationException.class);
+        validateRootCause(() -> service.create(
+                new Bet(10000000,"Россия - Англия", 123, "  ", 123, 123, 1.23,
+                        LocalDateTime.of(2015, Month.MAY, 30, 23, 59), false)
+                , USER_ID), ConstraintViolationException.class);
+        validateRootCause(() -> service.create(
+                new Bet(10000000,"Россия - Англия", 123, "123", 123, 123, 1.23,
+                        null, false)
+                , USER_ID), ConstraintViolationException.class);
     }
 }

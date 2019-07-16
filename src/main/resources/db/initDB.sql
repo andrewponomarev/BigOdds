@@ -15,7 +15,7 @@ CREATE TABLE users
   enabled          BOOL DEFAULT TRUE       NOT NULL,
   second_name       VARCHAR                         ,
   first_name        VARCHAR                         ,
-  date_time         TIMESTAMP DEFAULT now()         ,
+  birth_day         TIMESTAMP DEFAULT now()         ,
   phone_number      VARCHAR
 );
 CREATE UNIQUE INDEX users_unique_email_idx ON users (email);
@@ -38,7 +38,7 @@ CREATE TABLE bets (
   event       TEXT       NOT NULL,
   net_profit  NUMERIC(20,3)        ,
   return_sum  NUMERIC(20,3)        ,
-  is_express  BOOL DEFAULT FALSE ,
+  express     BOOL DEFAULT FALSE ,
   FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 CREATE UNIQUE INDEX bets_unique_user_datetime_idx
