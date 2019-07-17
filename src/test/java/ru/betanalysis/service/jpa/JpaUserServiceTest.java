@@ -6,5 +6,5 @@ import ru.betanalysis.Profiles;
 import ru.betanalysis.service.AbstractJpaUserServiceTest;
 
 @ActiveProfiles(Profiles.JPA)
-public class JpaUserServiceTest extends AbstractJpaUserServiceTest {
+class JpaUserServiceTest extends AbstractJpaUserServiceTest {
 }

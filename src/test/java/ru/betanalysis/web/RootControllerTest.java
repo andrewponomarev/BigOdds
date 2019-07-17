@@ -1,7 +1,6 @@
 package ru.betanalysis.web;
 
-
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -10,10 +9,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static ru.betanalysis.model.AbstractBaseEntity.START_SEQ;
 import static ru.betanalysis.web.user.UserTestData.USER;
 
-public class RootControllerTest extends AbstractControllerTest {
+class RootControllerTest extends AbstractControllerTest {
 
     @Test
-    public void testUsers() throws Exception {
+    void testUsers() throws Exception {
         mockMvc.perform(get("/users"))
                 .andDo(print())
                 .andExpect(status().isOk())

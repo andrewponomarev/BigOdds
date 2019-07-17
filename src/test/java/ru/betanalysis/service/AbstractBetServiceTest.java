@@ -1,8 +1,8 @@
 package ru.betanalysis.service;
 
 import org.hibernate.exception.ConstraintViolationException;
-import org.junit.Assume;
-import org.junit.Test;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.betanalysis.model.Bet;
 import ru.betanalysis.util.exception.NotFoundException;
@@ -11,6 +11,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static ru.betanalysis.web.user.BetTestData.*;
 import static ru.betanalysis.web.user.UserTestData.ADMIN_ID;
 import static ru.betanalysis.web.user.UserTestData.USER_ID;
@@ -22,19 +24,19 @@ public abstract class AbstractBetServiceTest extends AbstractServiceTest {
     protected BetService service;
 
     @Test
-    public void delete() throws Exception {
+    void delete() throws Exception {
         service.delete(BET1_ID, USER_ID);
         assertMatch(service.getAll(USER_ID), BET3, BET2);
     }
 
     @Test
-    public void deleteNotFound() throws Exception {
-        thrown.expect(NotFoundException.class);
-        service.delete(BET1_ID, 1);
+    void deleteNotFound() throws Exception {
+        assertThrows(NotFoundException.class, () ->
+            service.delete(BET1_ID, 1));
     }
 
     @Test
-    public void create() throws Exception {
+    void create() throws Exception {
         Bet newBet = getCreated();
         Bet created = service.create(newBet, USER_ID);
         newBet.setId(created.getId());
@@ -43,38 +45,37 @@ public abstract class AbstractBetServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void get() throws Exception {
+    void get() throws Exception {
         Bet actual = service.get(ADMIN_BET_ID, ADMIN_ID);
         assertMatch(actual, ADMIN_BET1);
     }
 
     @Test
-    public void getNotFound() throws Exception {
-        thrown.expect(NotFoundException.class);
-        service.get(BET1_ID, ADMIN_ID);
+    void getNotFound() throws Exception {
+        assertThrows(NotFoundException.class, () ->
+            service.get(BET1_ID, ADMIN_ID));
     }
 
     @Test
-    public void update() throws Exception {
+    void update() throws Exception {
         Bet updated = getUpdated();
         service.update(updated, USER_ID);
         assertMatch(service.get(BET1_ID, USER_ID), updated);
     }
 
     @Test
-    public void updateNotFound() throws Exception {
-        thrown.expect(NotFoundException.class);
-        thrown.expectMessage("Not found entity with id=" + BET1_ID);
-        service.update(BET1, ADMIN_ID);
+    void updateNotFound() throws Exception {
+        NotFoundException e = assertThrows(NotFoundException.class, () -> service.update(BET1, ADMIN_ID));
+        assertEquals(e.getMessage(), "Not found entity with id=" + BET1_ID);
     }
 
     @Test
-    public void getAll() throws Exception {
+    void getAll() throws Exception {
         assertMatch(service.getAll(USER_ID), BETS);
     }
 
     @Test
-    public void getBetween() throws Exception {
+    void getBetween() throws Exception {
         assertMatch(service.getBetweenDates(
                 LocalDate.of(2015, Month.MAY, 30),
                 LocalDate.of(2015, Month.MAY, 30), USER_ID), BET3, BET2, BET1);
@@ -83,8 +84,8 @@ public abstract class AbstractBetServiceTest extends AbstractServiceTest {
     //todo: hibernate не валидирует ставку
     // org.hibernate.cfg.beanvalidation.BeanValidationEventListener.validate()
     @Test
-    public void testValidation() throws Exception {
-        Assume.assumeTrue(isJpaBased());
+    void testValidation() throws Exception {
+        Assumptions.assumeTrue(isJpaBased(), "Validation not supported (JPA only)");
 //        validateRootCause(() -> service.create(
 //                new Bet(10000000,"  ", 123, "123", 123, 123, 1.23,
 //                LocalDateTime.of(2015, Month.MAY, 30, 23, 59), false)
