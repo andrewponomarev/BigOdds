@@ -1,15 +1,16 @@
 package ru.betanalysis.web.user;
 
+import org.springframework.test.web.servlet.ResultMatcher;
 import ru.betanalysis.model.Bet;
 
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.util.Arrays;
 import java.util.List;
 
 import static java.time.LocalDateTime.of;
 import static org.assertj.core.api.Assertions.assertThat;
 import static ru.betanalysis.model.AbstractBaseEntity.START_SEQ;
+import static ru.betanalysis.web.TestUtil.readListFromJsonMvcResult;
 
 public class BetTestData {
 
@@ -50,6 +51,14 @@ public class BetTestData {
 
     public static void assertMatch(Iterable<Bet> actual, Iterable<Bet> expected) {
         assertThat(actual).usingElementComparatorIgnoringFields("user").isEqualTo(expected);
+    }
+
+    public static ResultMatcher contentJson(Iterable<Bet> expected) {
+        return result -> assertMatch(readListFromJsonMvcResult(result, Bet.class), expected);
+    }
+
+    public static ResultMatcher contentJson(Bet... expected) {
+        return result -> assertMatch(readListFromJsonMvcResult(result, Bet.class), List.of(expected));
     }
 
 }

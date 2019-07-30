@@ -5,15 +5,18 @@ import java.util.Objects;
 
 public class BetTo {
 
-    private final String event;
+    private String event;
 
-    private final double value;
+    private double value;
 
-    private final double coefficient;
+    private double coefficient;
 
-    private final LocalDateTime dateTime;
+    private LocalDateTime dateTime;
 
-    private final boolean express;
+    private boolean express;
+
+    public BetTo() {
+    }
 
     public BetTo(String event, double value, double coefficient, LocalDateTime dateTime, boolean express) {
         this.event = event;
