@@ -1,4 +1,4 @@
-package ru.betanalysis.model;
+package ru.betanalysis.model.unused;
 
 /**
  * Турнир

@@ -1,4 +1,6 @@
-package ru.betanalysis.model;
+package ru.betanalysis.model.unused;
+
+import ru.betanalysis.model.User;
 
 import java.time.LocalDateTime;
 import java.util.Currency;
