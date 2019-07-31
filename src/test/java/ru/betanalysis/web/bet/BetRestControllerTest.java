@@ -75,11 +75,21 @@ class BetRestControllerTest extends AbstractControllerTest {
                 .andExpect(contentJson(BETS));
     }
 
+
     @Test
-    void testGetBetween() throws Exception {
-        mockMvc.perform(get(REST_URL + "between?startDateTime=2015-05-30T07:00&endDateTime=2015-05-31T11:00:00"))
+    void testFilter() throws Exception {
+        mockMvc.perform(get(REST_URL + "filter")
+                .param("startDate", "2015-05-30").param("startTime", "07:00")
+                .param("endDate", "2015-05-31").param("endTime", "11:00"))
                 .andExpect(status().isOk())
                 .andDo(print())
+                .andExpect(contentJson(BETS));
+    }
+
+    @Test
+    void testFilterAll() throws Exception {
+        mockMvc.perform(get(REST_URL + "filter?startDate=&endTime="))
+                .andExpect(status().isOk())
                 .andExpect(contentJson(BETS));
     }
 
