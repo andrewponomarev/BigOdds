@@ -1,4 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<hr>
-<footer><fmt:message key="app.footer"/></footer>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<footer class="footer">
+    <div class="container">
+        <span class="text-muted"><spring:message code="app.footer"/></span>
+    </div>
+</footer>
