@@ -3,10 +3,10 @@ package ru.betanalysis.web.user;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import ru.betanalysis.model.Role;
 import ru.betanalysis.model.User;
+import ru.betanalysis.to.UserTo;
+import ru.betanalysis.util.UserUtil;
 
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -28,15 +28,10 @@ public class AdminUIController extends AbstractUserController {
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void createOrUpdate(@RequestParam("id") Integer id,
-                               @RequestParam("name") String name,
-                               @RequestParam("email") String email,
-                               @RequestParam("password") String password) {
+    public void createOrUpdate(UserTo userTo) {
 
-        User user = new User(id, name, email, password, "",
-                "", "", new Date(), Role.ROLE_USER);
-        if (user.isNew()) {
-            super.create(user);
+        if (userTo.isNew()) {
+            super.create(UserUtil.createNewFromTo(userTo));
         }
     }
 
