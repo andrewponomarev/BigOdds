@@ -26,8 +26,8 @@
     <bean class="org.springframework.format.support.FormattingConversionServiceFactoryBean" id="conversionService">
         <property name="formatters">
             <set>
-                <!--<bean class="ru.betanalysis.web.converter.DateTimeFormatters.LocalDateFormatter"/>-->
-                <!--<bean class="ru.betanalysis.web.converter.DateTimeFormatters.LocalTimeFormatter"/>-->
+                <bean class="ru.betanalysis.web.converter.DateTimeFormatters.LocalDateFormatter"/>
+                <bean class="ru.betanalysis.web.converter.DateTimeFormatters.LocalTimeFormatter"/>
             </set>
         </property>
     </bean>
