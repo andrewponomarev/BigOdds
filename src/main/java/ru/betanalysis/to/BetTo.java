@@ -3,7 +3,7 @@ package ru.betanalysis.to;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class BetTo {
+public class BetTo extends BaseTo {
 
     private String event;
 
@@ -18,7 +18,8 @@ public class BetTo {
     public BetTo() {
     }
 
-    public BetTo(String event, double value, double coefficient, LocalDateTime dateTime, boolean express) {
+    public BetTo(Integer id, String event, double value, double coefficient, LocalDateTime dateTime, boolean express) {
+        super(id);
         this.event = event;
         this.value = value;
         this.coefficient = coefficient;
@@ -66,6 +67,7 @@ public class BetTo {
     @Override
     public String toString() {
         return "BetTo{" +
+                "id=" + id +
                 "event='" + event + '\'' +
                 ", value=" + value +
                 ", coefficient=" + coefficient +

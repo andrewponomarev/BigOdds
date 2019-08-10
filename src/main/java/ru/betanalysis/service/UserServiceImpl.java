@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import ru.betanalysis.model.User;
 import ru.betanalysis.repository.UserRepository;
+import ru.betanalysis.to.UserTo;
+import ru.betanalysis.util.UserUtil;
 import ru.betanalysis.util.exception.NotFoundException;
 
 import java.util.List;
@@ -60,6 +62,14 @@ public class UserServiceImpl implements UserService {
     public void update(User user) {
         Assert.notNull(user, "user must not be null");
         checkNotFoundWithId(repository.save(user), user.getId());
+    }
+
+    @CacheEvict(value = "users", allEntries = true)
+    @Transactional
+    @Override
+    public void update(UserTo userTo) {
+        User user = get(userTo.getId());
+        repository.save(UserUtil.updateFromTo(user, userTo));
     }
 
     @Override

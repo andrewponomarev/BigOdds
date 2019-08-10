@@ -112,20 +112,40 @@ public class User extends AbstractNamedEntity {
         return email;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getPassword() {
         return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getSecondName() {
         return secondName;
     }
 
+    public void setSecondName(String secondName) {
+        this.secondName = secondName;
+    }
+
     public String getFirstName() {
         return firstName;
     }
 
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
     public String getPhoneNumber() {
         return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public boolean isEnabled() {
@@ -136,16 +156,20 @@ public class User extends AbstractNamedEntity {
         this.enabled = enabled;
     }
 
+    public Date getRegistered() {
+        return registered;
+    }
+
+    public void setRegistered(Date registered) {
+        this.registered = registered;
+    }
+
     public Date getBirthDay() {
         return birthDay;
     }
 
     public void setBirthDay(Date birthDay) {
         this.birthDay = birthDay;
-    }
-
-    public Date getRegistered() {
-        return registered;
     }
 
     public Set<Role> getRoles() {
@@ -158,6 +182,10 @@ public class User extends AbstractNamedEntity {
 
     public List<Bet> getBets() {
         return bets;
+    }
+
+    public void setBets(List<Bet> bets) {
+        this.bets = bets;
     }
 
     @Override

@@ -13,4 +13,11 @@ public class UserUtil {
                 null, null, null, null,  Role.ROLE_USER);
     }
 
+    public static User updateFromTo(User user, UserTo userTo) {
+        user.setName(userTo.getName());
+        user.setEmail(userTo.getEmail().toLowerCase());
+        user.setPassword(userTo.getPassword());
+        return user;
+    }
+
 }

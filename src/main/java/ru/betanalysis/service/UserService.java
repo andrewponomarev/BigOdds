@@ -1,6 +1,7 @@
 package ru.betanalysis.service;
 
 import ru.betanalysis.model.User;
+import ru.betanalysis.to.UserTo;
 import ru.betanalysis.util.exception.NotFoundException;
 
 import java.util.List;
@@ -16,6 +17,8 @@ public interface UserService {
     User getByEmail(String email) throws NotFoundException;
 
     void update(User user);
+
+    void update(UserTo userTo);
 
     List<User> getAll();
 

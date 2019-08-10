@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import ru.betanalysis.model.Role;
 import ru.betanalysis.model.User;
+import ru.betanalysis.to.UserTo;
+import ru.betanalysis.util.UserUtil;
 import ru.betanalysis.web.AbstractControllerTest;
 import ru.betanalysis.web.json.JsonUtil;
 
@@ -37,11 +39,13 @@ class ProfileRestControllerTest extends AbstractControllerTest {
     void testUpdate() throws Exception {
         User updated = new User(USER_ID, "user", "email@mail.com", "password", "secondName",
                 "firstName", "phoneNumber", new Date(), Role.ROLE_USER);
+
+        UserTo updatedTo = new UserTo(USER_ID, "user","email@mail.com", "password");
         mockMvc.perform(put(REST_URL).contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(updated)))
+                .content(JsonUtil.writeValue(updatedTo)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
 
-        assertMatch(userService.getByEmail("newemail@ya.ru"), updated);
+        assertMatch(userService.getByEmail("email@mail.com"), UserUtil.updateFromTo(new User(USER), updatedTo));
     }
 }
