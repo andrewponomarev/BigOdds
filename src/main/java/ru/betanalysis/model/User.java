@@ -55,8 +55,7 @@ public class User extends AbstractNamedEntity {
     @NotNull
     private Date registered = new Date();
 
-    @Column(name = "birth_day", nullable = false)
-    @NotNull
+    @Column(name = "birth_day", nullable = true)
     private Date birthDay = new Date();
 
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
