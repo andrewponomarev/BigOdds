@@ -3,6 +3,7 @@ package ru.betanalysis.model;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.format.annotation.DateTimeFormat;
+import ru.betanalysis.View;
 import ru.betanalysis.util.DateTimeUtil;
 
 import javax.persistence.*;
@@ -95,6 +96,7 @@ public class Bet extends AbstractBaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @NotNull(groups = View.Persist.class)
     private User user;
 
     public Bet() {
