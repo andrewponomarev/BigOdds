@@ -19,9 +19,9 @@ function enable(chkbox, id) {
 $(function () {
     debugger;
     makeEditable({
-            ajaxUrl: userAjaxUrl,
-            datatableOpts: {
-                "columns": [
+        ajaxUrl: userAjaxUrl,
+        datatableOpts: {
+            "columns": [
                     {
                         "data": "name"
                     },
@@ -77,7 +77,7 @@ $(function () {
                         $(row).attr("data-userEnabled", false);
                     }
                 }
-            }),
+            },
             updateTable: function () {
                 $.get(userAjaxUrl, updateTableByData);
             }
