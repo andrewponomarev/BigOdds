@@ -28,7 +28,7 @@ class BetRestControllerTest extends AbstractControllerTest {
 
     @Test
     void testGet() throws Exception {
-        mockMvc.perform(get(REST_URL + BET1_ID)
+        mockMvc.perform(get(REST_URL + ADMIN_BET_ID)
                 .with(userHttpBasic(ADMIN)))
                 .andExpect(status().isOk())
                 .andDo(print())
@@ -43,10 +43,26 @@ class BetRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    void testGetNotFound() throws Exception {
+        mockMvc.perform(get(REST_URL + ADMIN_BET_ID)
+                .with(userHttpBasic(USER)))
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
     void testDelete() throws Exception {
-        mockMvc.perform(delete(REST_URL + BET1_ID))
+        mockMvc.perform(delete(REST_URL + BET1_ID)
+                .with(userHttpBasic(USER)))
                 .andExpect(status().isNoContent());
         assertMatch(service.getAll(START_SEQ), BET3, BET2);
+    }
+
+    @Test
+    void testDeleteNotFound() throws Exception {
+        mockMvc.perform(delete(REST_URL + ADMIN_BET_ID)
+                .with(userHttpBasic(USER)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
     }
 
     @Test
@@ -74,7 +90,7 @@ class BetRestControllerTest extends AbstractControllerTest {
         created.setId(returned.getId());
 
         assertMatch(returned, created);
-        assertMatch(service.getAll(START_SEQ), created, ADMIN_BET2, ADMIN_BET1);
+        assertMatch(service.getAll(START_SEQ + 1), created, ADMIN_BET2, ADMIN_BET1);
     }
 
     @Test

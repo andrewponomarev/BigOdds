@@ -21,7 +21,6 @@
                     <betanalysis:inputField labelCode="user.name" name="name"/>
                     <betanalysis:inputField labelCode="user.email" name="email"/>
                     <betanalysis:inputField labelCode="user.password" name="password" inputType="password"/>
-                    <betanalysis:inputField labelCode="user.caloriesPerDay" name="caloriesPerDay" inputType="number"/>
 
                     <div class="text-right">
                         <a class="btn btn-secondary" href="#" onclick="window.history.back()">
