@@ -18,6 +18,7 @@
         </c:if>
         <sec:authorize access="isAnonymous()">
             <div class="pt-4">
+                <a class="btn btn-lg btn-success" href="register"><spring:message code="app.register"/> &raquo;</a>
                 <button type="submit" class="btn btn-lg btn-primary" onclick="login('email@mail.com', 'password')">
                     <spring:message code="app.login"/> User
                 </button>
@@ -26,7 +27,8 @@
                 </button>
             </div>
         </sec:authorize>
-        <div class="lead py-4">Стек технологий: <a href="http://projects.spring.io/spring-security/">Spring Security</a>,
+        <div class="lead py-4">Стек технологий:  <br>
+            <a href="http://projects.spring.io/spring-security/">Spring Security</a>,
             <a href="https://docs.spring.io/spring/docs/current/spring-framework-reference/html/mvc.html">Spring MVC</a>,
             <a href="http://projects.spring.io/spring-data-jpa/">Spring Data JPA</a>,
             <a href="http://spring.io/blog/2014/05/07/preview-spring-security-test-method-security">Spring Security

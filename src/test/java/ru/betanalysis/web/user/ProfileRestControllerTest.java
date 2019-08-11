@@ -2,6 +2,7 @@ package ru.betanalysis.web.user;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.ResultActions;
 import ru.betanalysis.model.Role;
 import ru.betanalysis.model.User;
 import ru.betanalysis.to.UserTo;
@@ -15,6 +16,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static ru.betanalysis.web.TestUtil.readFromJson;
 import static ru.betanalysis.web.TestUtil.userHttpBasic;
 import static ru.betanalysis.web.user.ProfileRestController.REST_URL;
 import static ru.betanalysis.web.user.UserTestData.*;
@@ -57,5 +59,22 @@ class ProfileRestControllerTest extends AbstractControllerTest {
                 .andExpect(status().isNoContent());
 
         assertMatch(userService.getByEmail("email@mail.com"), UserUtil.updateFromTo(new User(USER), updatedTo));
+    }
+
+    @Test
+    void testRegister() throws Exception {
+        UserTo createdTo = new UserTo(null, "newName", "newemail@ya.ru", "newPassword");
+
+        ResultActions action = mockMvc.perform(post(REST_URL + "/register").contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(createdTo)))
+                .andDo(print())
+                .andExpect(status().isCreated());
+        User returned = readFromJson(action, User.class);
+
+        User created = UserUtil.createNewFromTo(createdTo);
+        created.setId(returned.getId());
+
+        assertMatch(returned, created);
+        assertMatch(userService.getByEmail("newemail@ya.ru"), created);
     }
 }
