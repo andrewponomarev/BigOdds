@@ -69,4 +69,8 @@
         <property name="basenames" value="file:///#{systemEnvironment['BETANALYSIS_ROOT']}/config/messages/app"/>
         <property name="fallbackToSystemLocale" value="false"/>
     </bean>
+
+    <mvc:interceptors>
+        <bean class="ru.betanalysis.web.interceptor.ModelInterceptor"/>
+    </mvc:interceptors>
 </beans>
