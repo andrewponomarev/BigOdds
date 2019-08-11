@@ -14,6 +14,9 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import static ru.betanalysis.web.TestUtil.mockAuthorize;
+import static ru.betanalysis.web.user.UserTestData.USER;
+
 public class SpringMain {
     public static void main(String[] args) {
         // java 7 Automatic resource management
@@ -21,6 +24,9 @@ public class SpringMain {
             appCtx.getEnvironment().setActiveProfiles(Profiles.getActiveDbProfile(), Profiles.REPOSITORY_IMPLEMENTATION);
             appCtx.load("spring/spring-app.xml", "spring/inmemory.xml");
             appCtx.refresh();
+
+            mockAuthorize(USER);
+
             System.out.println("Bean definition names: " + Arrays.toString(appCtx.getBeanDefinitionNames()));
             AdminRestController adminUserController = appCtx.getBean(AdminRestController.class);
             adminUserController.create(new User(null, "userName", "email@mail.ru", "password",
