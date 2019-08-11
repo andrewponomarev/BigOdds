@@ -20,13 +20,7 @@ $(function () {
     debugger;
     makeEditable({
             ajaxUrl: userAjaxUrl,
-            datatableApi: $("#datatable").DataTable({
-                "ajax": {
-                    "url": userAjaxUrl,
-                    "dataSrc": ""
-                },
-                "paging": false,
-                "info": true,
+            datatableOpts: {
                 "columns": [
                     {
                         "data": "name"

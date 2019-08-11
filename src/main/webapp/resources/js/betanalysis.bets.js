@@ -1,25 +1,33 @@
+const betAjaxUrl = "ajax/profile/bets/";
+
 function updateFilteredTable() {
     $.ajax({
         type: "GET",
-        url: "ajax/profile/bets/filter",
+        url: betAjaxUrl + "filter",
         data: $("#filter").serialize()
     }).done(updateTableByData);
 }
 
 function clearFilter() {
     $("#filter")[0].reset();
-    $.get("ajax/profile/bets/", updateTableByData);
+    $.get(betAjaxUrl, updateTableByData);
 }
 
 $(function () {
     makeEditable({
-        ajaxUrl: "ajax/profile/bets/",
-        datatableApi: $("#datatable").DataTable({
+        ajaxUrl: betAjaxUrl,
+        datatableOpts: {
             "paging": false,
             "info": true,
             "columns": [
                 {
-                    "data": "dateTime"
+                    "data": "dateTime",
+                    "render": function (date, type, row) {
+                        if (type === 'display') {
+                            return date.replace('T', ' ').substr(0, 16);
+                        }
+                        return date;
+                    }
                 },
                 {
                     "data": "event"
@@ -28,11 +36,13 @@ $(function () {
                     "data": "coefficient"
                 },
                 {
-                    "defaultContent": "Edit",
+                    "render": renderEditBtn,
+                    "defaultContent": "",
                     "orderable": false
                 },
                 {
-                    "defaultContent": "Delete",
+                    "render": renderDeleteBtn,
+                    "defaultContent": "",
                     "orderable": false
                 }
             ],
@@ -41,8 +51,11 @@ $(function () {
                     0,
                     "desc"
                 ]
-            ]
-        }),
+            ],
+            "createdRow": function (row, data, dataIndex) {
+                $(row).attr("data-mealExcess", data.excess);
+            },
+        },
         updateTable: updateFilteredTable
     });
 });
