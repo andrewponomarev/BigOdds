@@ -5,6 +5,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -12,11 +13,12 @@ import ru.betanalysis.AuthorizedUser;
 import ru.betanalysis.model.User;
 import ru.betanalysis.repository.UserRepository;
 import ru.betanalysis.to.UserTo;
-import ru.betanalysis.util.UserUtil;
 import ru.betanalysis.util.exception.NotFoundException;
 
 import java.util.List;
 
+import static ru.betanalysis.util.UserUtil.prepareToSave;
+import static ru.betanalysis.util.UserUtil.updateFromTo;
 import static ru.betanalysis.util.ValidationUtil.checkNotFound;
 import static ru.betanalysis.util.ValidationUtil.checkNotFoundWithId;
 
@@ -24,17 +26,19 @@ import static ru.betanalysis.util.ValidationUtil.checkNotFoundWithId;
 public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository repository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository repository) {
+    public UserServiceImpl(UserRepository repository, PasswordEncoder passwordEncoder) {
         this.repository = repository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     @CacheEvict(value = "users", allEntries = true)
     public User create(User user) {
         Assert.notNull(user, "user must not be null");
-        return repository.save(user);
+        return repository.save(prepareToSave(user, passwordEncoder));
     }
 
     @Override
@@ -71,8 +75,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Transactional
     @Override
     public void update(UserTo userTo) {
-        User user = get(userTo.getId());
-        repository.save(UserUtil.updateFromTo(user, userTo));
+        User user = updateFromTo(get(userTo.getId()), userTo);
+        repository.save(prepareToSave(user, passwordEncoder));
     }
 
     @Override

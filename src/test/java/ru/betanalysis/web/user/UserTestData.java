@@ -23,7 +23,7 @@ public class UserTestData {
             "secondName", "firstName", "phoneNumber",
             new Date(), Role.ROLE_ADMIN, Role.ROLE_USER);
 
-    public static String[] IGNORING_FIELDS = {"registered","birthDay", "bets"};
+    public static String[] IGNORING_FIELDS = {"registered","birthDay", "bets", "password"};
 
     public static void assertMatch(User actual, User expected) {
         assertThat(actual).isEqualToIgnoringGivenFields(expected, IGNORING_FIELDS);

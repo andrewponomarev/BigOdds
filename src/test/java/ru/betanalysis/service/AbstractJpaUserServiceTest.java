@@ -40,7 +40,7 @@ abstract public class AbstractJpaUserServiceTest extends AbstractUserServiceTest
                         new Date(), Role.ROLE_USER)),
                 ConstraintViolationException.class);
         validateRootCause(() -> service.create(
-                new User(10000000, "name", "email@m.com", "1234",
+                new User(10000000, "name", "email@m.com", "",
                         "secondName", "firstName", "phoneNumber",
                         new Date(), Role.ROLE_USER)),
                 ConstraintViolationException.class);

@@ -4,8 +4,8 @@ DELETE FROM bets;
 ALTER SEQUENCE global_seq RESTART WITH 100000;
 
 INSERT INTO users (name, email, password, second_name, first_name, phone_number) VALUES
-  ('user', 'email@mail.com', 'password', 'secondName', 'firstName', 'phoneNumber'),
-  ('admin', 'admin@mail.com', 'password', 'secondName', 'firstName', 'phoneNumber');
+  ('user', 'email@mail.com', '{noop}password', 'secondName', 'firstName', 'phoneNumber'),
+  ('admin', 'admin@mail.com', '{noop}password', 'secondName', 'firstName', 'phoneNumber');
 
 INSERT INTO user_roles (role, user_id) VALUES
   ('ROLE_USER', 100000),
