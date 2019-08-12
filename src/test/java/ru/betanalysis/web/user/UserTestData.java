@@ -3,6 +3,7 @@ package ru.betanalysis.web.user;
 import org.springframework.test.web.servlet.ResultMatcher;
 import ru.betanalysis.model.Role;
 import ru.betanalysis.model.User;
+import ru.betanalysis.web.json.JsonUtil;
 
 import java.util.Date;
 import java.util.List;
@@ -44,5 +45,9 @@ public class UserTestData {
 
     public static ResultMatcher contentJson(User expected) {
         return result -> assertMatch(readFromJsonMvcResult(result, User.class), expected);
+    }
+
+    public static String jsonWithPassword(User user, String passw) {
+        return JsonUtil.writeAdditionProps(user, "password", passw);
     }
 }
