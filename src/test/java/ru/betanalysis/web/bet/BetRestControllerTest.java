@@ -6,13 +6,16 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import ru.betanalysis.model.Bet;
 import ru.betanalysis.service.BetService;
+import ru.betanalysis.util.exception.ErrorType;
 import ru.betanalysis.web.AbstractControllerTest;
 import ru.betanalysis.web.json.JsonUtil;
 
+import java.time.LocalDateTime;
+import java.time.Month;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static ru.betanalysis.model.AbstractBaseEntity.START_SEQ;
 import static ru.betanalysis.web.TestUtil.*;
 import static ru.betanalysis.web.user.BetTestData.*;
@@ -121,6 +124,34 @@ class BetRestControllerTest extends AbstractControllerTest {
                 .with(userHttpBasic(USER)))
                 .andExpect(status().isOk())
                 .andExpect(contentJson(BETS));
+    }
+
+    @Test
+    void testCreateInvalid() throws Exception {
+        Bet invalid = new Bet(null,null, 123, "123", 123, 123, 1.23,
+                LocalDateTime.of(2015, Month.MAY, 30, 10, 0), false);
+        mockMvc.perform(post(REST_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(invalid))
+                .with(userHttpBasic(ADMIN)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(jsonPath("$.type").value(ErrorType.VALIDATION_ERROR.name()))
+                .andDo(print());
+    }
+
+    @Test
+    void testUpdateInvalid() throws Exception {
+        Bet invalid = new Bet(BET1_ID,null, 123, null, 123, 123, 1.23,
+                LocalDateTime.of(2015, Month.MAY, 30, 10, 0), false);
+        mockMvc.perform(put(REST_URL + BET1_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(invalid))
+                .with(userHttpBasic(USER)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(jsonPath("$.type").value(ErrorType.VALIDATION_ERROR.name()))
+                .andDo(print());
     }
 
 }

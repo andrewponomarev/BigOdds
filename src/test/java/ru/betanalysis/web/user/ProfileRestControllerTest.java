@@ -7,6 +7,7 @@ import ru.betanalysis.model.Role;
 import ru.betanalysis.model.User;
 import ru.betanalysis.to.UserTo;
 import ru.betanalysis.util.UserUtil;
+import ru.betanalysis.util.exception.ErrorType;
 import ru.betanalysis.web.AbstractControllerTest;
 import ru.betanalysis.web.json.JsonUtil;
 
@@ -14,8 +15,7 @@ import java.util.Date;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static ru.betanalysis.web.TestUtil.readFromJson;
 import static ru.betanalysis.web.TestUtil.userHttpBasic;
 import static ru.betanalysis.web.user.ProfileRestController.REST_URL;
@@ -76,5 +76,18 @@ class ProfileRestControllerTest extends AbstractControllerTest {
 
         assertMatch(returned, created);
         assertMatch(userService.getByEmail("newemail@ya.ru"), created);
+    }
+
+    @Test
+    void testUpdateInvalid() throws Exception {
+        UserTo updatedTo = new UserTo(null, null, null, "newPassword");
+
+        mockMvc.perform(put(REST_URL).contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(USER))
+                .content(JsonUtil.writeValue(updatedTo)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(jsonPath("$.type").value(ErrorType.VALIDATION_ERROR.name()))
+                .andDo(print());
     }
 }

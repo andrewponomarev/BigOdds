@@ -5,6 +5,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import ru.betanalysis.model.Role;
 import ru.betanalysis.model.User;
+import ru.betanalysis.util.exception.ErrorType;
 import ru.betanalysis.web.AbstractControllerTest;
 import ru.betanalysis.web.json.JsonUtil;
 
@@ -13,8 +14,7 @@ import java.util.Set;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static ru.betanalysis.web.TestUtil.readFromJson;
 import static ru.betanalysis.web.TestUtil.userHttpBasic;
 import static ru.betanalysis.web.user.UserTestData.*;
@@ -121,5 +121,31 @@ class AdminRestControllerTest extends AbstractControllerTest {
                 .andExpect(contentJson(ADMIN, USER));
     }
 
+    @Test
+    void testCreateInvalid() throws Exception {
+        User expected = new User(null, "user", "newemail@mail.com", "password", "secondName",
+                "firstName", "phoneNumber", new Date(), Role.ROLE_USER);
+        mockMvc.perform(post(REST_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(ADMIN))
+                .content(JsonUtil.writeValue(expected)))
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(jsonPath("$.type").value(ErrorType.VALIDATION_ERROR.name()))
+                .andDo(print());
+    }
+
+    @Test
+    void testUpdateInvalid() throws Exception {
+        User updated = new User(USER);
+        updated.setName("");
+        mockMvc.perform(put(REST_URL + USER_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(ADMIN))
+                .content(JsonUtil.writeValue(updated)))
+                .andExpect(status().isUnprocessableEntity())
+                .andDo(print())
+                .andExpect(jsonPath("$.type").value(ErrorType.VALIDATION_ERROR.name()))
+                .andDo(print());
+    }
 
 }

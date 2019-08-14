@@ -2,11 +2,8 @@ package ru.betanalysis.web.bet;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.betanalysis.model.Bet;
-import ru.betanalysis.util.ValidationUtil;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
@@ -50,17 +47,12 @@ public class BetUIController extends AbstractBetController {
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public ResponseEntity<String> createOrUpdate(@Valid Bet bet, BindingResult result) {
-        if (result.hasErrors()) {
-            // TODO change to exception handler
-            return ValidationUtil.getErrorResponse(result);
-        }
+    public void createOrUpdate(@Valid Bet bet) {
         if (bet.isNew()) {
             super.create(bet);
         } else {
             super.update(bet, bet.getId());
         }
-        return ResponseEntity.ok().build();
     }
 
 
