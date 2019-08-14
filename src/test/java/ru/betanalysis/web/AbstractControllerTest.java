@@ -19,7 +19,6 @@ import ru.betanalysis.util.exception.ErrorType;
 
 import javax.annotation.PostConstruct;
 
-import static org.apache.taglibs.standard.resources.Resources.getMessage;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -53,6 +52,9 @@ abstract public class AbstractControllerTest {
     @Autowired
     private WebApplicationContext webApplicationContext;
 
+    @Autowired
+    protected MessageUtil messageUtil;
+
     @PostConstruct
     private void postConstruct() {
         mockMvc = MockMvcBuilders
@@ -68,6 +70,10 @@ abstract public class AbstractControllerTest {
         if (jpaUtil != null) {
             jpaUtil.clear2ndLevelHibernateCache();
         }
+    }
+
+    private String getMessage(String code) {
+        return messageUtil.getMessage(code, MessageUtil.RU_LOCALE);
     }
 
     public ResultMatcher errorType(ErrorType type) {

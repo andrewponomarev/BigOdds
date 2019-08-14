@@ -51,7 +51,7 @@ public class RootController extends AbstractUserController {
         super.update(userTo, SecurityUtil.authUserId());
         SecurityUtil.get().update(userTo);
         status.setComplete();
-        return "redirect:meals";
+        return "redirect:bets";
     }
 
     @GetMapping("/register")
