@@ -13,34 +13,25 @@ function clearFilter() {
     $.get(betAjaxUrl, updateTableByData);
 }
 
-// http://api.jquery.com/jQuery.ajax/#using-converters
-$.ajaxSetup({
-    converters: {
-        "text json": function (stringData) {
-            const json = JSON.parse(stringData);
-            $(json).each(function () {
-                this.dateTime = this.dateTime.replace('T', ' ').substr(0, 16);
-            });
-            return json;
-        }
-    }
-});
-
 $(function () {
     makeEditable({
         ajaxUrl: betAjaxUrl,
         datatableOpts: {
-            "paging": false,
-            "info": true,
             "columns": [
                 {
-                    "data": "dateTime"
+                    "data": "dateTime",
+                    "render": function (date, type, row) {
+                        if (type === 'display') {
+                            return formatDate(date);
+                        }
+                        return date;
+                    }
                 },
                 {
-                    "data": "event"
+                    "data": "description"
                 },
                 {
-                    "data": "coefficient"
+                    "data": "calories"
                 },
                 {
                     "render": renderEditBtn,
@@ -60,9 +51,35 @@ $(function () {
                 ]
             ],
             "createdRow": function (row, data, dataIndex) {
-                $(row).attr("data-mealExcess", data.excess);
+                $(row).attr("data-betExcess", data.excess);
             },
         },
         updateTable: updateFilteredTable
+    });
+
+//  http://xdsoft.net/jqplugins/datetimepicker/
+    const startTime = $('#startTime');
+    const endTime = $('#endTime');
+    startTime.datetimepicker({
+        datepicker: false,
+        format: 'H:i',
+        onShow: function (ct) {
+            this.setOptions({
+                maxTime: endTime.val() ? endTime.val() : false
+            })
+        }
+    });
+    endTime.datetimepicker({
+        datepicker: false,
+        format: 'H:i',
+        onShow: function (ct) {
+            this.setOptions({
+                minTime: startTime.val() ? startTime.val() : false
+            })
+        }
+    });
+
+    $('#dateTime').datetimepicker({
+        format: 'Y-m-d H:i'
     });
 });

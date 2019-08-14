@@ -3,36 +3,29 @@ package ru.betanalysis.repository.inmemory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.CollectionUtils;
 import ru.betanalysis.model.Bet;
 import ru.betanalysis.repository.BetRepository;
-import ru.betanalysis.util.BetUtil;
 import ru.betanalysis.util.Util;
 
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-
-import static ru.betanalysis.web.user.UserTestData.ADMIN_ID;
-import static ru.betanalysis.web.user.UserTestData.USER_ID;
 
 @Repository
 public class InMemoryBetRepositoryImpl implements BetRepository {
 
     private static final Logger log = LoggerFactory.getLogger(InMemoryBetRepositoryImpl.class);
 
-    // Map  userId -> (mealId-> meal)
+    // Map  userId -> (betId-> bet)
     private Map<Integer, InMemoryBaseRepositoryImpl<Bet>> usersBetsMap = new ConcurrentHashMap<>();
 
     @Override
-    public Bet save(Bet meal, int userId) {
-        Objects.requireNonNull(meal, "meal must not be null");
-        var meals = usersBetsMap.computeIfAbsent(userId, uid -> new InMemoryBaseRepositoryImpl<>());
-        return meals.save(meal);
+    public Bet save(Bet bet, int userId) {
+        Objects.requireNonNull(bet, "bet must not be null");
+        var bets = usersBetsMap.computeIfAbsent(userId, uid -> new InMemoryBaseRepositoryImpl<>());
+        return bets.save(bet);
     }
 
     @Override

@@ -17,9 +17,9 @@ class DataJpaBetServiceTest extends AbstractBetServiceTest {
 
     @Test
     public void testGetWithUser() throws Exception {
-        Bet adminMeal = service.getWithUser(ADMIN_BET_ID, ADMIN_ID);
-        assertMatch(adminMeal, ADMIN_BET1);
-        UserTestData.assertMatch(adminMeal.getUser(), UserTestData.ADMIN);
+        Bet adminBet = service.getWithUser(ADMIN_BET_ID, ADMIN_ID);
+        assertMatch(adminBet, ADMIN_BET1);
+        UserTestData.assertMatch(adminBet.getUser(), UserTestData.ADMIN);
     }
 
     @Test
