@@ -2,6 +2,7 @@ package ru.betanalysis.web;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -22,6 +23,7 @@ import ru.betanalysis.util.exception.IllegalRequestDataException;
 import ru.betanalysis.util.exception.NotFoundException;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 import java.util.Objects;
 
 import static ru.betanalysis.util.exception.ErrorType.*;
@@ -29,7 +31,18 @@ import static ru.betanalysis.util.exception.ErrorType.*;
 @RestControllerAdvice(annotations = RestController.class)
 @Order(Ordered.HIGHEST_PRECEDENCE + 5)
 public class ExceptionInfoHandler {
+
+    @Autowired
+    private MessageUtil messageUtil;
+
     private static Logger log = LoggerFactory.getLogger(ExceptionInfoHandler.class);
+
+    public static final String EXCEPTION_DUPLICATE_EMAIL = "exception.user.duplicateEmail";
+    public static final String EXCEPTION_DUPLICATE_DATETIME = "exception.meal.duplicateDateTime";
+
+    private static final Map<String, String> CONSTRAINS_I18N_MAP = Map.of(
+            "users_unique_email_idx", EXCEPTION_DUPLICATE_EMAIL,
+            "meals_unique_user_datetime_idx", EXCEPTION_DUPLICATE_DATETIME);
 
     //  http://stackoverflow.com/a/22358422/548473
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
@@ -53,7 +66,7 @@ public class ExceptionInfoHandler {
         String[] details = result.getFieldErrors().stream()
                 .map(fe -> {
                     String msg = fe.getDefaultMessage();
-                    return msg == null ? null : (msg.startsWith(fe.getField())) ? msg : fe.getField() + ' ' + msg;
+                    return msg == null ? messageUtil.getMessage(fe) : (msg.startsWith(fe.getField())) ? msg : fe.getField() + ' ' + msg;
                 }).filter(Objects::nonNull)
                 .toArray(String[]::new);
 
