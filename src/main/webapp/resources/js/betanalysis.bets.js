@@ -13,6 +13,7 @@ function clearFilter() {
     $.get(betAjaxUrl, updateTableByData);
 }
 
+// http://api.jquery.com/jQuery.ajax/#using-converters
 $.ajaxSetup({
     converters: {
         "text json": function (stringData) {
@@ -31,7 +32,7 @@ $(function () {
         datatableOpts: {
             "columns": [
                 {
-                    "data": "dateTime",
+                    "data": "dateTime"
                 },
                 {
                     "data": "event"
@@ -63,7 +64,32 @@ $(function () {
         updateTable: updateFilteredTable
     });
 
+    $.datetimepicker.setLocale(localeCode);
+
 //  http://xdsoft.net/jqplugins/datetimepicker/
+    const startDate = $('#startDate');
+    const endDate = $('#endDate');
+    startDate.datetimepicker({
+        timepicker: false,
+        format: 'Y-m-d',
+        formatDate: 'Y-m-d',
+        onShow: function (ct) {
+            this.setOptions({
+                maxDate: endDate.val() ? endDate.val() : false
+            })
+        }
+    });
+    endDate.datetimepicker({
+        timepicker: false,
+        format: 'Y-m-d',
+        formatDate: 'Y-m-d',
+        onShow: function (ct) {
+            this.setOptions({
+                minDate: startDate.val() ? startDate.val() : false
+            })
+        }
+    });
+
     const startTime = $('#startTime');
     const endTime = $('#endTime');
     startTime.datetimepicker({

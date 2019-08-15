@@ -58,7 +58,6 @@ public class Bet extends AbstractBaseEntity {
      * Валюта, в которой сделана ставка
      */
     @Column(name="currency", nullable = false)
-    @NotBlank
     private String currency;
 
     /**

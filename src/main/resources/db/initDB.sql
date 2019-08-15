@@ -34,7 +34,7 @@ CREATE TABLE bets (
   date_time   TIMESTAMP NOT NULL,
   value       NUMERIC (20,3) NOT NULL,
   coefficient NUMERIC (20,3) NOT NULL,
-  currency    TEXT      NOT NULL,
+  currency    TEXT      ,
   event       TEXT       NOT NULL,
   net_profit  NUMERIC(20,3)        ,
   return_sum  NUMERIC(20,3)        ,
