@@ -6,5 +6,5 @@ import ru.betanalysis.service.AbstractBetServiceTest;
 import static ru.betanalysis.Profiles.JPA;
 
 @ActiveProfiles(JPA)
-public class JpaBetServiceTest extends AbstractBetServiceTest {
+class JpaBetServiceTest extends AbstractBetServiceTest {
 }

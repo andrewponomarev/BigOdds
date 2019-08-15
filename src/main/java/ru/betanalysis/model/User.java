@@ -1,9 +1,12 @@
 package ru.betanalysis.model;
 
-
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.validator.constraints.SafeHtml;
+import ru.betanalysis.HasEmail;
+import ru.betanalysis.View;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -23,7 +26,7 @@ import java.util.Set;
 })
 @Entity
 @Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = "email", name = "users_unique_email_idx")})
-public class User extends AbstractNamedEntity {
+public class User extends AbstractNamedEntity implements HasEmail {
 
     public static final String DELETE = "User.delete";
     public static final String BY_EMAIL = "User.getByEmail";
@@ -33,11 +36,14 @@ public class User extends AbstractNamedEntity {
     @Email
     @NotBlank
     @Size(max = 100)
+    @SafeHtml(groups = {View.Web.class})
     private String email;
 
     @Column(name = "password", nullable = false)
     @NotBlank
     @Size(min = 5, max = 100)
+    // https://stackoverflow.com/a/12505165/548473
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @Column(name = "second_name")
@@ -54,10 +60,10 @@ public class User extends AbstractNamedEntity {
 
     @Column(name = "registered", nullable = false, columnDefinition = "timestamp default now()")
     @NotNull
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Date registered = new Date();
 
-    @Column(name = "birth_day", nullable = false)
-    @NotNull
+    @Column(name = "birth_day", nullable = true)
     private Date birthDay = new Date();
 
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -70,6 +76,7 @@ public class User extends AbstractNamedEntity {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")//, cascade = CascadeType.REMOVE, orphanRemoval = true)
     @OrderBy("dateTime DESC")
+    //@JsonIgnore
     protected List<Bet> bets;
 
     public User() {
@@ -108,24 +115,45 @@ public class User extends AbstractNamedEntity {
         setRoles(roles);
     }
 
+    @Override
     public String getEmail() {
         return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
         return password;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public String getSecondName() {
         return secondName;
+    }
+
+    public void setSecondName(String secondName) {
+        this.secondName = secondName;
     }
 
     public String getFirstName() {
         return firstName;
     }
 
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
     public String getPhoneNumber() {
         return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public boolean isEnabled() {
@@ -136,16 +164,20 @@ public class User extends AbstractNamedEntity {
         this.enabled = enabled;
     }
 
+    public Date getRegistered() {
+        return registered;
+    }
+
+    public void setRegistered(Date registered) {
+        this.registered = registered;
+    }
+
     public Date getBirthDay() {
         return birthDay;
     }
 
     public void setBirthDay(Date birthDay) {
         this.birthDay = birthDay;
-    }
-
-    public Date getRegistered() {
-        return registered;
     }
 
     public Set<Role> getRoles() {
@@ -158,6 +190,10 @@ public class User extends AbstractNamedEntity {
 
     public List<Bet> getBets() {
         return bets;
+    }
+
+    public void setBets(List<Bet> bets) {
+        this.bets = bets;
     }
 
     @Override

@@ -29,7 +29,7 @@
               p:password="${database.password}"/>
     </beans>
 
-    <beans profile="postgres">
+    <beans profile="postgres, heroku">
         <context:property-placeholder location="classpath:db/postgres.properties" system-properties-mode="OVERRIDE"/>
 
         <bean id="dataSource"
@@ -83,6 +83,8 @@
                     <entry key="#{T(org.hibernate.cfg.AvailableSettings).USE_SECOND_LEVEL_CACHE}" value="true"/>
                     <entry key="#{T(org.hibernate.cfg.AvailableSettings).USE_QUERY_CACHE}" value="false"/> <!--default-->
 
+                    <entry key="javax.persistence.validation.group.pre-persist" value="ru.betanalysis.View$Persist"/>
+                    <entry key="javax.persistence.validation.group.pre-update" value="ru.betanalysis.View$Persist"/>
 
                     <!--
                          <entry key="#{T(org.hibernate.cfg.AvailableSettings).HBM2DDL_SCRIPTS_ACTION}" value="drop-and-create"/>

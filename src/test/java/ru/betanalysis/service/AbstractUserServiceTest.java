@@ -1,7 +1,7 @@
 package ru.betanalysis.service;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.dao.DataAccessException;
@@ -12,6 +12,7 @@ import ru.betanalysis.util.exception.NotFoundException;
 import java.util.Date;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static ru.betanalysis.web.user.UserTestData.*;
 
 public abstract class AbstractUserServiceTest extends AbstractServiceTest{
@@ -22,13 +23,13 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest{
     @Autowired
     private CacheManager cacheManager;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         cacheManager.getCache("users").clear();
     }
 
     @Test
-    public void create() throws Exception {
+    void create() throws Exception {
         User newUser = new User(null, "user", "email2@mail.ru", "password",
                 "secondName", "firstName", "phoneNumber",
                 new Date(), Role.ROLE_USER);
@@ -38,43 +39,45 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest{
         assertMatch(service.getAll(), ADMIN, newUser, USER);
     }
 
-    @Test(expected = DataAccessException.class)
-    public void duplicateMailCreate() throws Exception {
-        service.create(new User(null, "user", "email@mail.com", "password",
-                "secondName", "firstName", "phoneNumber",
-                new Date(), Role.ROLE_USER));
+    @Test
+    void duplicateMailCreate() throws Exception {
+        assertThrows(DataAccessException.class, () ->
+                service.create(new User(null, "user", "email@mail.com", "password", "secondName",
+                        "firstName", "phoneNumber", new Date(), Role.ROLE_USER)));
     }
 
     @Test
-    public void delete() throws Exception {
+    void delete() throws Exception {
         service.delete(USER_ID);
         assertMatch(service.getAll(), ADMIN);
     }
 
-    @Test(expected = NotFoundException.class)
-    public void deletedNotFound() throws Exception {
-        service.delete(1);
+    @Test
+    void deletedNotFound() throws Exception {
+        assertThrows(NotFoundException.class, () ->
+                service.get(1));
     }
 
     @Test
-    public void get() throws Exception {
+    void get() throws Exception {
         User user = service.get(USER_ID);
         assertMatch(user, USER);
     }
 
-    @Test(expected = NotFoundException.class)
-    public void getNotFound() throws Exception {
-        service.get(1);
+    @Test
+    void getNotFound() throws Exception {
+        assertThrows(NotFoundException.class, () ->
+                service.get(1));
     }
 
     @Test
-    public void getByEmail() throws Exception {
+    void getByEmail() throws Exception {
         User user = service.getByEmail("email@mail.com");
         assertMatch(user, USER);
     }
 
     @Test
-    public void update() throws Exception {
+    void update() throws Exception {
         User updated = new User(USER);
         updated.setName("UpdatedName");
         service.update(new User(updated));
@@ -82,9 +85,16 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest{
     }
 
     @Test
-    public void getAll() throws Exception {
+    void getAll() throws Exception {
         List<User> all = service.getAll();
         assertMatch(all, ADMIN, USER);
     }
 
+    @Test
+    void enable() {
+        service.enable(USER_ID, false);
+        assertFalse(service.get(USER_ID).isEnabled());
+        service.enable(USER_ID, true);
+        assertTrue(service.get(USER_ID).isEnabled());
+    }
 }

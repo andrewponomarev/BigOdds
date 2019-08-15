@@ -2,10 +2,15 @@ package ru.betanalysis.model;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.validator.constraints.SafeHtml;
+import org.springframework.format.annotation.DateTimeFormat;
+import ru.betanalysis.View;
+import ru.betanalysis.util.DateTimeUtil;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 
@@ -38,6 +43,8 @@ public class Bet extends AbstractBaseEntity {
      */
     @Column(name="event", nullable = false)
     @NotBlank
+    @Size(min = 2, max = 120)
+    @SafeHtml(groups = {View.Web.class})
     private String event;
 
     /**
@@ -70,13 +77,15 @@ public class Bet extends AbstractBaseEntity {
      * Коэффициент
      */
     @Column(name="coefficient")
-    private double coefficient;
+    @NotNull
+    private Double coefficient;
 
     /**
      * Дата/время
      */
     @Column(name="date_time", nullable = false)
     @NotNull
+    @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN)
     private LocalDateTime dateTime;
 
     /**
@@ -91,7 +100,7 @@ public class Bet extends AbstractBaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @NotNull
+    @NotNull(groups = View.Persist.class)
     private User user;
 
     public Bet() {
@@ -167,7 +176,7 @@ public class Bet extends AbstractBaseEntity {
         this.netProfit = netProfit;
     }
 
-    public void setCoefficient(double coefficient) {
+    public void setCoefficient(Double coefficient) {
         this.coefficient = coefficient;
     }
 
