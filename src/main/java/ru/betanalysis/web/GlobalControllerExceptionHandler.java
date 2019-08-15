@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
-import ru.betanalysis.AuthorizedUser;
 import ru.betanalysis.util.ValidationUtil;
 import ru.betanalysis.util.exception.ErrorType;
 
@@ -32,11 +31,6 @@ public class GlobalControllerExceptionHandler {
         mav.addObject("exception", rootCause);
         mav.addObject("message", ValidationUtil.getMessage(rootCause));
 
-        // Interceptor is not invoked, put userTo
-        AuthorizedUser authorizedUser = SecurityUtil.safeGet();
-        if (authorizedUser != null) {
-            mav.addObject("userTo", authorizedUser.getUserTo());
-        }
         return mav;
     }
 }

@@ -1,12 +1,14 @@
 package ru.betanalysis.web;
 
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.support.SessionStatus;
+import ru.betanalysis.AuthorizedUser;
 import ru.betanalysis.to.UserTo;
 import ru.betanalysis.util.UserUtil;
 import ru.betanalysis.web.user.AbstractUserController;
@@ -39,19 +41,20 @@ public class RootController extends AbstractUserController {
     }
 
     @GetMapping("/profile")
-    public String profile() {
+    public String profile(ModelMap model, @AuthenticationPrincipal AuthorizedUser authUser) {
+        model.addAttribute("userTo", authUser.getUserTo());
         return "profile";
     }
 
     @PostMapping("/profile")
-    public String updateProfile(@Valid UserTo userTo, BindingResult result, SessionStatus status) {
+    public String updateProfile(@Valid UserTo userTo, BindingResult result, SessionStatus status, @AuthenticationPrincipal AuthorizedUser authUser) {
         if (result.hasErrors()) {
             return "profile";
         }
-        super.update(userTo, SecurityUtil.authUserId());
-        SecurityUtil.get().update(userTo);
+        super.update(userTo, authUser.getId());
+        authUser.update(userTo);
         status.setComplete();
-        return "redirect:bets";
+        return "redirect:meals";
     }
 
     @GetMapping("/register")
