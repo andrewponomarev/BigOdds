@@ -3,11 +3,12 @@ package ru.betanalysis.web.bet;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import ru.betanalysis.View;
 import ru.betanalysis.model.Bet;
 
-import javax.validation.Valid;
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -41,12 +42,12 @@ public class BetRestController extends AbstractBetController {
     @Override
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void update(@Valid @RequestBody Bet bet, @PathVariable int id) {
+    public void update(@Validated(View.Web.class) @RequestBody Bet bet, @PathVariable int id) {
         super.update(bet, id);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Bet> createWithLocation(@Valid @RequestBody Bet bet) {
+    public ResponseEntity<Bet> createWithLocation(@Validated(View.Web.class) @RequestBody Bet bet) {
         Bet created = super.create(bet);
 
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()

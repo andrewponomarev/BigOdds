@@ -6,7 +6,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import ru.betanalysis.model.Bet;
 import ru.betanalysis.service.BetService;
-import ru.betanalysis.util.exception.ErrorType;
 import ru.betanalysis.web.AbstractControllerTest;
 import ru.betanalysis.web.json.JsonUtil;
 
@@ -17,6 +16,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static ru.betanalysis.model.AbstractBaseEntity.START_SEQ;
+import static ru.betanalysis.util.exception.ErrorType.VALIDATION_ERROR;
 import static ru.betanalysis.web.TestUtil.*;
 import static ru.betanalysis.web.user.BetTestData.*;
 import static ru.betanalysis.web.user.UserTestData.ADMIN;
@@ -136,7 +136,7 @@ class BetRestControllerTest extends AbstractControllerTest {
                 .with(userHttpBasic(ADMIN)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity())
-                .andExpect(jsonPath("$.type").value(ErrorType.VALIDATION_ERROR.name()))
+                .andExpect(jsonPath("$.type").value(VALIDATION_ERROR.name()))
                 .andDo(print());
     }
 
@@ -150,7 +150,21 @@ class BetRestControllerTest extends AbstractControllerTest {
                 .with(userHttpBasic(USER)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity())
-                .andExpect(jsonPath("$.type").value(ErrorType.VALIDATION_ERROR.name()))
+                .andExpect(jsonPath("$.type").value(VALIDATION_ERROR.name()))
+                .andDo(print());
+    }
+
+    @Test
+    void testUpdateHtmlUnsafe() throws Exception {
+        Bet invalid = new Bet(BET1_ID,"<script>alert(123)</script>", 123, null, 123, 123, 1.23,
+                LocalDateTime.of(2015, Month.MAY, 30, 10, 0), false);
+        mockMvc.perform(put(REST_URL + BET1_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(invalid))
+                .with(userHttpBasic(USER)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(errorType(VALIDATION_ERROR))
                 .andDo(print());
     }
 

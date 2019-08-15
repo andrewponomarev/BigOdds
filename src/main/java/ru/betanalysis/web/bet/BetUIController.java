@@ -2,10 +2,11 @@ package ru.betanalysis.web.bet;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ru.betanalysis.View;
 import ru.betanalysis.model.Bet;
 
-import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -47,7 +48,7 @@ public class BetUIController extends AbstractBetController {
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void createOrUpdate(@Valid Bet bet) {
+    public void createOrUpdate(@Validated(View.Web.class) Bet bet) {
         if (bet.isNew()) {
             super.create(bet);
         } else {
