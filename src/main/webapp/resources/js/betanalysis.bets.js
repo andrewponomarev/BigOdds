@@ -13,6 +13,18 @@ function clearFilter() {
     $.get(betAjaxUrl, updateTableByData);
 }
 
+$.ajaxSetup({
+    converters: {
+        "text json": function (stringData) {
+            const json = JSON.parse(stringData);
+            $(json).each(function () {
+                this.dateTime = this.dateTime.replace('T', ' ').substr(0, 16);
+            });
+            return json;
+        }
+    }
+});
+
 $(function () {
     makeEditable({
         ajaxUrl: betAjaxUrl,
@@ -20,18 +32,12 @@ $(function () {
             "columns": [
                 {
                     "data": "dateTime",
-                    "render": function (date, type, row) {
-                        if (type === 'display') {
-                            return formatDate(date);
-                        }
-                        return date;
-                    }
                 },
                 {
-                    "data": "description"
+                    "data": "event"
                 },
                 {
-                    "data": "calories"
+                    "data": "coefficient"
                 },
                 {
                     "render": renderEditBtn,
