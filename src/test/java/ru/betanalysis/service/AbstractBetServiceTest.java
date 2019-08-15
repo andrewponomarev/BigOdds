@@ -4,13 +4,14 @@ import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.betanalysis.model.Bet;
+import ru.betanalysis.util.exception.ErrorType;
 import ru.betanalysis.util.exception.NotFoundException;
 
 import java.time.LocalDate;
 import java.time.Month;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static ru.betanalysis.web.user.BetTestData.*;
 import static ru.betanalysis.web.user.UserTestData.ADMIN_ID;
 import static ru.betanalysis.web.user.UserTestData.USER_ID;
@@ -64,7 +65,10 @@ public abstract class AbstractBetServiceTest extends AbstractServiceTest {
     @Test
     void updateNotFound() throws Exception {
         NotFoundException e = assertThrows(NotFoundException.class, () -> service.update(BET1, ADMIN_ID));
-        assertEquals(e.getMessage(), "Not found entity with id=" + BET1_ID);
+        String msg = e.getMessage();
+        assertTrue(msg.contains(ErrorType.DATA_NOT_FOUND.name()));
+        assertTrue(msg.contains(NotFoundException.NOT_FOUND_EXCEPTION));
+        assertTrue(msg.contains(String.valueOf(BET1_ID)));
     }
 
     @Test

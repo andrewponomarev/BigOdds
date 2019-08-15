@@ -17,9 +17,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static ru.betanalysis.util.exception.ErrorType.VALIDATION_ERROR;
+import static ru.betanalysis.web.ExceptionInfoHandler.EXCEPTION_DUPLICATE_EMAIL;
 import static ru.betanalysis.web.TestUtil.readFromJson;
 import static ru.betanalysis.web.TestUtil.userHttpBasic;
-import static ru.betanalysis.web.user.AbstractUserController.EXCEPTION_DUPLICATE_EMAIL;
 import static ru.betanalysis.web.user.UserTestData.*;
 
 class AdminRestControllerTest extends AbstractControllerTest {

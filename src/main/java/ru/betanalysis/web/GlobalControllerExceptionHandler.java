@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.NoHandlerFoundException;
 import ru.betanalysis.util.ValidationUtil;
+import ru.betanalysis.util.exception.ApplicationException;
 import ru.betanalysis.util.exception.ErrorType;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,19 +20,28 @@ public class GlobalControllerExceptionHandler {
     @Autowired
     private MessageUtil messageUtil;
 
-    @ExceptionHandler(Exception.class)
-    public ModelAndView defaultErrorHandler(HttpServletRequest req, Exception e) throws Exception {
-        return logAndGetExceptionView(req, e, true, ErrorType.APP_ERROR);
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public ModelAndView wrongRequest(HttpServletRequest req, NoHandlerFoundException e) throws Exception {
+        return logAndGetExceptionView(req, e, false, ErrorType.WRONG_REQUEST, null);
     }
 
-    private ModelAndView logAndGetExceptionView(HttpServletRequest req, Exception e, boolean logException, ErrorType errorType) {
+    @ExceptionHandler(ApplicationException.class)
+    public ModelAndView applicationErrorHandler(HttpServletRequest req, ApplicationException appEx) throws Exception {
+        return logAndGetExceptionView(req, appEx, true, appEx.getType(), messageUtil.getMessage(appEx));
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ModelAndView defaultErrorHandler(HttpServletRequest req, Exception e) throws Exception {
+        return logAndGetExceptionView(req, e, true, ErrorType.APP_ERROR, null);
+    }
+
+    private ModelAndView logAndGetExceptionView(HttpServletRequest req, Exception e, boolean logException, ErrorType errorType, String msg) {
         Throwable rootCause = ValidationUtil.logAndGetRootCause(log, req, e, logException, errorType);
 
         ModelAndView mav = new ModelAndView("exception/exception");
         mav.addObject("typeMessage", messageUtil.getMessage(errorType.getErrorCode()));
         mav.addObject("exception", rootCause);
-        mav.addObject("message", ValidationUtil.getMessage(rootCause));
-
+        mav.addObject("message", msg != null ? msg : ValidationUtil.getMessage(rootCause));
         return mav;
     }
 }

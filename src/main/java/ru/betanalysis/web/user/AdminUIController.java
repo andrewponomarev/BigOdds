@@ -15,6 +15,8 @@ import ru.betanalysis.util.exception.IllegalRequestDataException;
 import javax.validation.Valid;
 import java.util.List;
 
+import static ru.betanalysis.web.ExceptionInfoHandler.EXCEPTION_DUPLICATE_EMAIL;
+
 @RestController
 @RequestMapping("/ajax/admin/users")
 public class AdminUIController extends AbstractUserController {
