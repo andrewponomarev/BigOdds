@@ -5,7 +5,7 @@ Big odds project
 
 betting notes application
 
-used techhonologies:
+Used techhonologies:
 ====================
 Spring Security, Spring MVC, Spring Data JPA, Spring Security Test, Hibernate ORM, Hibernate Validator, SLF4J, Json Jackson, JSP, JSTL, Apache Tomcat, WebJars, DataTables plugin, EHCACHE, PostgreSQL, JUnit, Hamcrest, jQuery, jQuery notification, Bootstrap.
 
