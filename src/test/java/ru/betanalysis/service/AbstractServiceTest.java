@@ -24,7 +24,7 @@ import static ru.betanalysis.util.ValidationUtil.getRootCause;
 abstract class AbstractServiceTest {
 
     @Autowired
-    Environment env;
+    protected Environment env;
 
     static {
         // needed only for java.util.logging (postgres driver)
