@@ -105,7 +105,7 @@
                         <containerId>tomcat9x</containerId>
                         <systemProperties>
                             <file.encoding>UTF-8</file.encoding>
-                            <spri§ng.profiles.active>tomcat,datajpa</spring.profiles.active>
+                            <spring.profiles.active>tomcat,datajpa</spring.profiles.active>
                         </systemProperties>
                         <dependencies>
                             <dependency>
